@@ -13,7 +13,8 @@ set(SourceList "source/main.cpp"
                "source/resources/InitExitManager.cpp"
                "source/handle_elements/STimer.cpp"
                "source/renderer/STexture.cpp"
-    )
+               "source/renderer/SFont.cpp"
+   )
 
 #add_compile_options(-fsanitize=address -g -lpthread -static-libasn)
 #add_link_options(-fsanitize=address)
