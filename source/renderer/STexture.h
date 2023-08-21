@@ -39,6 +39,7 @@ public:
     SDL_Point getPosition() const noexcept { return position_; }
     // after the texture changing position should be set explicitly
     void setPosition(SDL_Point position) noexcept { position_ = position; }
+    void setPosition(int x, int y) noexcept { position_ = { x, y }; }
 
 private:
     void setDefault();

@@ -14,6 +14,7 @@ set(SourceList "source/main.cpp"
                "source/handle_elements/STimer.cpp"
                "source/renderer/STexture.cpp"
                "source/renderer/SFont.cpp"
+               "source/widget/SButton.cpp"
    )
 
 #add_compile_options(-fsanitize=address -g -lpthread -static-libasn)

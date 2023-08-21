@@ -52,27 +52,24 @@ void STexture::setDefault() {
 bool STexture::loadFromFile(SDL_Renderer *renderer, const std::string& path) {
     setDefault();
 
+    bool success = false;
     SDL_Surface* loaded_surface = IMG_Load(path.c_str());
     if (!loaded_surface) {
         std::cerr << "Unable to load surface from file. Path: " << path 
                   << ". IMG_Error " << IMG_GetError() << '\n';
-        return false;
-    }
-
-    // removing background. color key is transparent key.
-    SDL_SetColorKey(loaded_surface, SDL_TRUE, SDL_MapRGB(loaded_surface->format, 0xFF, 0xFF, 0xFF));
+        return success;
+    } else {
+        // removing background. color key is transparent key.
+        SDL_SetColorKey(loaded_surface, SDL_TRUE, SDL_MapRGB(loaded_surface->format, 0xFF, 0xFF, 0xFF));
     
-    texture_.reset(SDL_CreateTextureFromSurface(renderer, loaded_surface), Deleter());
-    if (!texture_) {
-        std::cerr << "Unable to create texture from surface. SDL_Error: " << SDL_GetError() << '\n';
-        return false;
+        if (createTextureFromSurface(renderer, loaded_surface)) {
+            success = true;
+        }
+
+        SDL_FreeSurface(loaded_surface);
     }
 
-    width_  = loaded_surface->w;
-    height_ = loaded_surface->h;
-
-    SDL_FreeSurface(loaded_surface);
-    return true;
+    return success;
 }
 
 // the function isn't responsible for the destroing the surface
