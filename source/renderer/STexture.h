@@ -2,18 +2,26 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+
 #include <iostream>
+#include <memory>
 
 class STexture final {
 public:
-    STexture();
-    ~STexture();
+    struct Deleter {
+        void operator()(SDL_Texture* texture) const {
+            SDL_DestroyTexture(texture);
+        }
+    };
 
+    STexture();
+    ~STexture() = default; // the shared_ptr and the deleter are responsible for the texture deleting
+
+    STexture(const STexture&);
+    STexture& operator=(const STexture&);
+    
     STexture(STexture&&) noexcept;
     STexture& operator=(STexture&&) noexcept;
-
-    STexture(const STexture&)            = delete;
-    STexture& operator=(const STexture&) = delete;
 
     bool loadFromFile(SDL_Renderer* renderer, const std::string& path);
     bool createTextureFromSurface(SDL_Renderer* renderer, SDL_Surface* surface);
@@ -24,7 +32,7 @@ public:
     void setAlpha(Uint8 alpha);
 
     // if the texture pointer isn't nullptr the object is valid
-    bool isValid()  const noexcept { return texture_; } 
+    bool isValid()  const noexcept { return texture_.get(); } 
     int getWidth()  const noexcept { return width_;  }
     int getHeight() const noexcept { return height_; }
 
@@ -34,9 +42,8 @@ public:
 
 private:
     void setDefault();
-    void free();
 
-    SDL_Texture* texture_;
+    std::shared_ptr<SDL_Texture> texture_;
 
     int width_;
     int height_;

@@ -4,8 +4,19 @@ SFont::SFont() : font_(nullptr)
 {
 }
 
-SFont::~SFont() {
-    free();
+SFont::SFont(const SFont& font) {
+    *this = font;
+}
+
+SFont& SFont::operator=(const SFont& font) {
+    if (this == &font) {
+        return *this;
+    }
+
+    font_ = font.font_;
+    path_ = font.path_;
+
+    return *this;
 }
 
 SFont::SFont(SFont&& another_font) noexcept {
@@ -17,30 +28,17 @@ SFont& SFont::operator=(SFont&& another_font) noexcept {
         return *this;
     }
 
-    free();
-
-    font_ = another_font.font_;
+    font_ = std::move(another_font.font_);
     path_ = std::move(another_font.path_);
-    another_font.font_ = nullptr;
 
     return *this;
 }
 
-void SFont::free() {
-    if (font_) {
-        TTF_CloseFont(font_);
-        font_ = nullptr;
-    }
-}
-
 bool SFont::loadFromFile(const std::string& path, int font_size) {
-    free();
-
-    font_ = TTF_OpenFont(path.c_str(), font_size);
+    font_.reset(TTF_OpenFont(path.c_str(), font_size), Deleter());
     if (!font_) {
         std::cerr << "Unable to open file to load font. Path: " << path 
                   << ". TTF_Error: " << TTF_GetError() << '\n';
-        font_ = nullptr;
         path_  = "";
         return false;
     }
@@ -56,7 +54,7 @@ STexture SFont::createFontTexture(SDL_Renderer *renderer, const std::string& tex
         return STexture();
     }
 
-    SDL_Surface* text_surface = TTF_RenderText_Solid(font_, text.c_str(), color);
+    SDL_Surface* text_surface = TTF_RenderText_Solid(font_.get(), text.c_str(), color);
     if (!text_surface) {
         std::cerr << "Unable to create text_surface from font. TTF_Error: " << TTF_GetError() << '\n';
         return STexture();

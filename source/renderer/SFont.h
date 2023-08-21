@@ -9,22 +9,27 @@
 
 class SFont final {
 public:
-    SFont();
-    ~SFont();
+    struct Deleter {
+        void operator()(TTF_Font* font) const {
+            TTF_CloseFont(font);
+        }
+    };
 
-    SFont(const SFont&) = delete;
-    SFont& operator=(const SFont&) = delete;
+    SFont();
+    ~SFont() = default; // shared_ptr and deleter are responsible for the font deleting
+
+    SFont(const SFont&);
+    SFont& operator=(const SFont&);
 
     SFont(SFont&&) noexcept;
     SFont& operator=(SFont&&) noexcept;
 
-    void free();
     bool loadFromFile(const std::string& path, int font_size);
 
     STexture createFontTexture(SDL_Renderer* renderer, const std::string& text, SDL_Color);
 
     const std::string& getPath() const noexcept { return path_; }
 private:
-    TTF_Font* font_;
+    std::shared_ptr<TTF_Font> font_;
     std::string path_;
 };
