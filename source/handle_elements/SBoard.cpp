@@ -92,9 +92,11 @@ void SBoard::setPosition(SDL_Point point) {
     // all the cells have the same size
     for (int i = 0; i < CELL_DIMEN; ++i) {
         for (int j = 0; j < CELL_DIMEN; ++j) {
-            cells_[i][j].setPosition(SDL_Point({ j * cell_width_, i * cell_height_ }));
+            cells_[i][j].setPosition(SDL_Point({point.x + j * cell_width_, point.y + i * cell_height_ }));
         }
     }
+
+    cell_background_->setPosition(point);
 }
 
 /*bool SBoard::isValid() const {

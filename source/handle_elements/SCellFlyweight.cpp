@@ -10,7 +10,7 @@ bool SCellFlyweight::init(SDL_Renderer* renderer) {
         return false;
     }
     
-    SDL_Color color = { 0x00, 0x00, 0xFF };
+    SDL_Color color = { 0x42, 0x25, 0x15 };
 
     for (int i = 0; i < SHARED_VALUE_COUNT - 1; ++i) { // SHARED_VALUE_COUNT equals 11 so the cast is safe
         shared_cells_[i] = font.createFontTexture(renderer, std::string(1, '0' + i), color);
@@ -25,7 +25,6 @@ STexture* SCellFlyweight::getFlyweightValue(char value) {
     if (value == ' ' ) {
         return &shared_cells_[SHARED_VALUE_COUNT - 1];
     } else {
-        std::cerr << value << '\n';
         return &shared_cells_[value - 48];
     }
 }
