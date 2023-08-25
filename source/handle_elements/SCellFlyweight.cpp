@@ -25,6 +25,7 @@ STexture* SCellFlyweight::getFlyweightValue(char value) {
     if (value == ' ' ) {
         return &shared_cells_[SHARED_VALUE_COUNT - 1];
     } else {
+        std::cerr << value << '\n';
         return &shared_cells_[value - 48];
     }
 }

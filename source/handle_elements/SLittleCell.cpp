@@ -10,7 +10,7 @@ SLittleCell::SLittleCell()
 void SLittleCell::handleEvents(SDL_Event &event) {
     if (event.type == SDL_KEYDOWN) {
         if (event.key.keysym.sym == SDLK_BACKSPACE) {
-            value_ = ' ';
+            setValue(' ');
         } else {
             switch (event.key.keysym.sym) {
                 case SDLK_1: { setValue('1'); break; }
@@ -28,7 +28,7 @@ void SLittleCell::handleEvents(SDL_Event &event) {
 }
 
 void SLittleCell::render(SDL_Renderer *renderer) {
-    value_ptr_->setPosition(position_);
+    value_ptr_->setPosition({ position_.x + CELL_OFFSET, position_.y + CELL_OFFSET });
     value_ptr_->render(renderer);
 }
 
