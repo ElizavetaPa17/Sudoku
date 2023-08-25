@@ -15,6 +15,8 @@ void SBoard::handleEvents(SDL_Event &event) {
 }
 
 void SBoard::render(SDL_Renderer *renderer) {
+    cell_background_->render(renderer);
+
     for (int i = 0; i < CELL_DIMEN; ++i) {
         for (int j = 0; j < CELL_DIMEN; ++j) {
             cells_[i][j].render(renderer);
@@ -22,16 +24,11 @@ void SBoard::render(SDL_Renderer *renderer) {
     }
 }
 
-void SBoard::setTexture(const STexture& texture) {
-    cell_width_  = texture.getWidth();
-    cell_height_ = texture.getHeight();
+void SBoard::setTexture(const std::shared_ptr<STexture> texture) {
+    cell_width_  = texture->getWidth() / CELL_DIMEN;
+    cell_height_ = texture->getHeight() / CELL_DIMEN;
 
-    for (int i = 0; i < CELL_DIMEN; ++i) {
-        for (int j = 0; j < CELL_DIMEN; ++j) {
-            cells_[i][j].setTexture(texture);
-        }
-    }
-
+    cell_background_ = texture; 
     setPosition({0, 0});
 }
 
@@ -95,12 +92,12 @@ void SBoard::setPosition(SDL_Point point) {
     // all the cells have the same size
     for (int i = 0; i < CELL_DIMEN; ++i) {
         for (int j = 0; j < CELL_DIMEN; ++j) {
-            cells_[i][j].setPosition(SDL_Point({ j * cell_width_, i * cell_height_ }));
+            cells_[i][j].setPosition(SDL_Point({ j * cell_width_ + 100, i * cell_height_ }));
         }
     }
 }
 
-bool SBoard::isValid() const {
+/*bool SBoard::isValid() const {
     for (int i = 0; i < CELL_DIMEN; ++i) {
         for (int j = 0; j < CELL_DIMEN; ++j) {
             if (!cells_[i][j].isValid()) {
@@ -110,4 +107,4 @@ bool SBoard::isValid() const {
     }
 
     return true;
-}
+}*/

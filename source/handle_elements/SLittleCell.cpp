@@ -1,21 +1,14 @@
 #include "SLittleCell.h"
 
 SLittleCell::SLittleCell() 
-    : background_(), value_ptr_(), value_(0), is_active_(false)
+    : value_ptr_(), position_({ 0, 0 }), value_(0)
 {
     setValue(' ');
-}
-
-SLittleCell::SLittleCell(const STexture& background, char value)
-    : background_(background), value_ptr_(), value_(value), is_active_(false)
-{
-    setValue(value);
 }
 
 // assume that cell is active
 void SLittleCell::handleEvents(SDL_Event &event) {
     if (event.type == SDL_KEYDOWN) {
-    std::cerr << background_.getPosition().x / 102 << '\t' << background_.getPosition().y / 104 << '\n';
         if (event.key.keysym.sym == SDLK_BACKSPACE) {
             value_ = ' ';
         } else {
@@ -35,22 +28,12 @@ void SLittleCell::handleEvents(SDL_Event &event) {
 }
 
 void SLittleCell::render(SDL_Renderer *renderer) {
-    background_.render(renderer);
-
-    value_ptr_->setPosition(background_.getPosition());
+    value_ptr_->setPosition(position_);
     value_ptr_->render(renderer);
-}
-
-void SLittleCell::setTexture(const STexture& texture) {
-    background_ = texture;
 }
 
 void SLittleCell::setValue(char value) noexcept {
     // assume that SCellFlyweight has already initialized
     value_ptr_ = SCellFlyweight::getFlyweightValue(value);
     value_ = value;
-}
-
-bool SLittleCell::isValid() const {
-    return background_.isValid();
 }

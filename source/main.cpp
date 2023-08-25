@@ -25,8 +25,8 @@ int main() {
             return -1;
         }
 
-        STexture texture;
-        texture.loadFromFile(renderer, "picture/rect.jpg");
+        std::shared_ptr<STexture> texture = std::make_shared<STexture>();
+        texture->loadFromFile(renderer, "picture/cells.jpg");
     
         SBoard board;
         board.setTexture(texture);
@@ -48,7 +48,7 @@ int main() {
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             SDL_RenderClear(renderer);
 
-            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
             board.render(renderer);
 
             SDL_RenderPresent(renderer);
