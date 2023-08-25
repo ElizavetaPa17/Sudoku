@@ -6,50 +6,50 @@
 #include "handle_elements/STimer.h"
 #include "renderer/STexture.h"
 #include "renderer/SFont.h"
+#include "handle_elements/SBoard.h"
 
 int main() {
     if (!InitExitManager::init(SDL_INIT_VIDEO | SDL_INIT_AUDIO, IMG_INIT_JPG | IMG_INIT_PNG)) {
         std::cerr << "Application error.\n";
         InitExitManager::exit();
-
+        
         return -1;
     } else {
         SDL_Window* window = SDL_CreateWindow("Test texture", SDL_WINDOWPOS_UNDEFINED, 
-                                              SDL_WINDOWPOS_UNDEFINED, 600, 500, SDL_WINDOW_SHOWN);
+                                              SDL_WINDOWPOS_UNDEFINED, 1600, 1200, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-        SFont font;
-        font.loadFromFile("font/test_font.ttf", 30);
-        
-        SDL_Color color = { 0xFF, 0x00, 0xFF };
-        STexture texture = font.createFontTexture(renderer, "It's working\n", color);
-        texture.setAlpha(0xFF);
+        if (!InitExitManager::initCellFlyweight(renderer)) {
+            InitExitManager::exit();
 
-        SDL_Point pos = { 10, 10 };
-        texture.setPosition(pos);
+            return -1;
+        }
 
-        color = { 0x00, 0xFF, 0xFF };
-        pos = { 10, 100 };
-        STexture texture2 = font.createFontTexture(renderer, "Hello", color);
-        texture2.setPosition(pos);
-        texture2.setAlpha(30);
+        STexture texture;
+        texture.loadFromFile(renderer, "picture/rect.jpg");
+    
+        SBoard board;
+        board.setTexture(texture);
 
         bool quit = false;
         SDL_Event event;
-        SDL_Point point = { 300, 250 };
+        SDL_Point point = { 10, 10 };
+        board.setPosition(point);
 
         while (!quit) {
             while(SDL_PollEvent(&event)) {
                 if (event.type == SDL_QUIT) {
                     quit = true;
                 }
+
+                board.handleEvents(event);
             }
 
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             SDL_RenderClear(renderer);
 
-            texture.render(renderer);
-            texture2.render(renderer);
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            board.render(renderer);
 
             SDL_RenderPresent(renderer);
         }

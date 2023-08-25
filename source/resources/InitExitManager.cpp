@@ -24,8 +24,17 @@ bool InitExitManager::init(int sdl_flags, int img_flags) {
         std::cerr << "Unable to init SDL_ttf. TTF_Error: " << TTF_GetError() << '\n';
         success = false;
     }
-
+    
     return success;
+}
+
+bool InitExitManager::initCellFlyweight(SDL_Renderer *renderer) {
+    if (!SCellFlyweight::init(renderer)) {
+        std::cerr << "Unable to init SCellFlyweight\n";
+        return false;
+    } else {
+        return true;
+    }
 }
 
 void InitExitManager::exit() {

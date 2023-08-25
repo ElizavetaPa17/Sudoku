@@ -15,7 +15,10 @@ set(SourceList "source/main.cpp"
                "source/renderer/STexture.cpp"
                "source/renderer/SFont.cpp"
                "source/widget/SButton.cpp"
-   )
+               "source/handle_elements/SBoard.cpp"
+               "source/handle_elements/SLittleCell.cpp"
+               "source/handle_elements/SCellFlyweight.cpp"
+    )
 
 #add_compile_options(-fsanitize=address -g -lpthread -static-libasn)
 #add_link_options(-fsanitize=address)

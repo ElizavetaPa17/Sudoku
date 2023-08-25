@@ -12,10 +12,14 @@
 // library for working with audio
 #include <SDL2/SDL_mixer.h>
 
+// keeps shared little cells. must be initilized before used
+#include "../handle_elements/SCellFlyweight.h"
+
 #include <iostream>
 
 class InitExitManager {
 public:
     static bool init(int sdl_flags, int img_flags);
+    static bool initCellFlyweight(SDL_Renderer* renderer);
     static void exit();
 };
