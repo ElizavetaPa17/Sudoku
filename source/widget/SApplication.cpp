@@ -28,9 +28,12 @@ bool SApplication::init() {
             return false;
         }
 
+        background_.loadFromFile(renderer_, "picture/background.png");
+        background_.setPosition({ 0, 0 });
+
         std::shared_ptr<STexture> texture = std::make_shared<STexture>();
         texture->loadFromFile(renderer_, "picture/board.png");
-    
+
         board_;
         board_.setTexture(texture);
         board_.setPosition({ 35, 35 });
@@ -43,6 +46,7 @@ void SApplication::run() {
     bool quit = false;
         SDL_Event event;
         SDL_Point point = { 10, 10 };
+        std::pair<int, int> collision_point;
 
         while (!quit) {
             while(SDL_PollEvent(&event)) {
@@ -51,12 +55,18 @@ void SApplication::run() {
                 }
 
                 board_.handleEvents(event);
+                collision_point = board_.checkCells();
+            
+                if (collision_point.first != -1) {
+                    std::cerr << "There is collision: ";
+                    std::cerr << collision_point.first << ':' << collision_point.second << '\n';
+                } 
             }
 
             SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
             SDL_RenderClear(renderer_);
-
-            SDL_SetRenderDrawColor(renderer_, 0x00, 0xFF, 0xFF, 0xFF);
+            
+            background_.render(renderer_);
             board_.render(renderer_);
 
             SDL_RenderPresent(renderer_);

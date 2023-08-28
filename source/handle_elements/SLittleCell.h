@@ -3,7 +3,8 @@
 #include "../renderer/STexture.h"
 #include "SCellFlyweight.h"
 
-const int CELL_OFFSET = 5; // rendering offset (to render the value in the center of each cell)
+const int CELL_OFFSET_X = 14; // rendering offset (to render the value in the center of each cell)
+const int CELL_OFFSET_Y = 4;
 
 class SLittleCell final {
 public:

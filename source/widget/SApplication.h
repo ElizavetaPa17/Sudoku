@@ -35,4 +35,5 @@ private:
     SDL_Window* window_;
     SDL_Renderer* renderer_;
     SBoard board_;
+    STexture background_;
 };

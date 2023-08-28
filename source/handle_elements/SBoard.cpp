@@ -10,7 +10,10 @@ void SBoard::handleEvents(SDL_Event &event) {
     { // calculate destination
       // row corresponds to Y axis
       // column corresponds to X axis
-       cells_[(y - getPosition().y) / cell_height_][(x - getPosition().x) / cell_width_].handleEvents(event); 
+      active_cell_.first  = (y - getPosition().y) / cell_height_;
+      active_cell_.second = (x - getPosition().x) / cell_width_;
+
+       cells_[active_cell_.first][active_cell_.second].handleEvents(event); 
     }
 }
 
@@ -29,46 +32,61 @@ void SBoard::setTexture(const std::shared_ptr<STexture> texture) {
     cell_height_ = texture->getHeight() / CELL_DIMEN;
 
     cell_background_ = texture; 
-    setPosition({0, 0});
+    setPosition({ 0, 0 });
 }
 
-// переделай проверку на наличие посредством буфера значений (входит. не входит)
-bool SBoard::checkCells() const {
-    for (int i = 0; i < CELL_DIMEN; ++i) {
-        for (int j = 0; j < CELL_DIMEN - 1; ++j) {
-            for (int k = j + 1; k < CELL_DIMEN; ++k) {
-                // if values equals and aren't empty return false;
-                if (cells_[i][j].getValue() == cells_[i][k].getValue() && cells_[i][j].getValue() != ' ') {
-                    return false;
-                }
-            }
-            
+std::pair<int, int> SBoard::checkCells() const {
+    // if active cell is space there can't be collisions
+    if (cells_[active_cell_.first][active_cell_.second].getValue() == ' ') {
+        return std::pair{ -1, -1 };
+    }
+
+    int active_cell_row = active_cell_.first;
+    int active_cell_col = active_cell_.second;
+
+    // row checking
+    for (int col = 0; col < active_cell_col; ++col) {
+        if (cells_[active_cell_row][col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
+        {
+            std::cerr << "1\t";
+            return active_cell_;
+        }
+    }
+    
+    for (int col = active_cell_col + 1; col < CELL_DIMEN; ++col) {
+        if (cells_[active_cell_row][col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
+        {
+            std::cerr << "2\t";
+            return active_cell_;
         }
     }
 
-    for (int j = 0; j < CELL_DIMEN; ++j) {
-        for (int i = 0; i < CELL_DIMEN - 1; ++i) {
-            for (int k = i + 1; k < CELL_DIMEN; ++k) {
-                if (cells_[i][j].getValue() == cells_[k][j].getValue() && cells_[i][j].getValue() != ' ') {
-                    return false;
-                }
-            }
-            
+    // column checking
+    for (int row = 0; row < active_cell_row; ++row) {
+        if (cells_[row][active_cell_col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
+        {
+            std::cerr << "3\t";
+            return active_cell_;
+        }
+    }
+    
+    for (int row = active_cell_row + 1; row < CELL_DIMEN; ++row) {
+        if (cells_[row][active_cell_col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
+        {
+            std::cerr << "4\t";
+            return active_cell_;
         }
     }
 
-    int count[9] = {};
-    for (int i = 0; i < CELL_DIMEN / 3; ++i) {
-        for (int j = 0; j < CELL_DIMEN / 3; ++j) {
-            if (!checkRectCells(i, j)) {
-                return false;
-            }
-        }
+    if (!checkRectCells(active_cell_.first, active_cell_.second)) {
+        return active_cell_;
     }
 
-    return true;
+    // there isn't any collision
+    return std::pair{ -1, -1 };
 }
 
+// check cells in the rectangle 3*3
 bool SBoard::checkRectCells(int row_offset, int col_offset) const {
     int array[CELL_DIMEN] = {};
     for (int i = row_offset; i < row_offset + CELL_DIMEN / 3; ++i) {

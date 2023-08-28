@@ -60,7 +60,7 @@ bool STexture::loadFromFile(SDL_Renderer *renderer, const std::string& path) {
         return success;
     } else {
         // removing background. color key is transparent key.
-        SDL_SetColorKey(loaded_surface, SDL_TRUE, SDL_MapRGB(loaded_surface->format, 0xFF, 0xFF, 0xFF));
+       // SDL_SetColorKey(loaded_surface, SDL_TRUE, SDL_MapRGB(loaded_surface->format, 0xFF, 0xFF, 0xFF));
     
         if (createTextureFromSurface(renderer, loaded_surface)) {
             success = true;

@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <memory>
+#include <utility>
 
 #include "SLittleCell.h"
 
@@ -18,7 +19,10 @@ public:
     void handleEvents(SDL_Event& event);
     void render(SDL_Renderer* renderer);
     void setTexture(const std::shared_ptr<STexture> texture);
-    bool checkCells() const;
+
+    // return pair comprises the row and column of the collision
+    // if there isn't any collision return pair(-1, -1)
+    std::pair<int, int> checkCells() const;
 
     void setPosition(SDL_Point point);
     SDL_Point getPosition() const noexcept { return cells_[0][0].getPosition(); }
@@ -32,5 +36,9 @@ private:
     std::shared_ptr<STexture> cell_background_;    
 
     int cell_width_;
-    int cell_height_;
+    int cell_height_; 
+
+    // the cell that handles user input at the moment
+    // comprises  row and collumn
+    std::pair<int, int> active_cell_;
 };

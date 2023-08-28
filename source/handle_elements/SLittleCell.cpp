@@ -28,7 +28,7 @@ void SLittleCell::handleEvents(SDL_Event &event) {
 }
 
 void SLittleCell::render(SDL_Renderer *renderer) {
-    value_ptr_->setPosition({ position_.x + CELL_OFFSET, position_.y + CELL_OFFSET });
+    value_ptr_->setPosition({ position_.x + CELL_OFFSET_X, position_.y + CELL_OFFSET_Y });
     value_ptr_->render(renderer);
 }
 
