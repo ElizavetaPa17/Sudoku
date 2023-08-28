@@ -22,7 +22,7 @@ public:
 
     // return pair comprises the row and column of the collision
     // if there isn't any collision return pair(-1, -1)
-    std::pair<int, int> checkCells() const;
+    std::pair<int, int> checkCells();
 
     void setPosition(SDL_Point point);
     SDL_Point getPosition() const noexcept { return cells_[0][0].getPosition(); }
@@ -35,10 +35,11 @@ private:
     SLittleCell cells_[CELL_DIMEN][CELL_DIMEN];
     std::shared_ptr<STexture> cell_background_;    
 
-    int cell_width_;
-    int cell_height_; 
+    int cell_width_  = 0;
+    int cell_height_ = 0; 
 
     // the cell that handles user input at the moment
     // comprises  row and collumn
     std::pair<int, int> active_cell_;
+    bool is_collision_ = false;
 };

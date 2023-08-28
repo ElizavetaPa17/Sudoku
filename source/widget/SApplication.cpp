@@ -55,12 +55,6 @@ void SApplication::run() {
                 }
 
                 board_.handleEvents(event);
-                collision_point = board_.checkCells();
-            
-                if (collision_point.first != -1) {
-                    std::cerr << "There is collision: ";
-                    std::cerr << collision_point.first << ':' << collision_point.second << '\n';
-                } 
             }
 
             SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
