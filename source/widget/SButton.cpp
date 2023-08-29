@@ -1,6 +1,7 @@
 #include "SButton.h"
 
-SButton::SButton(STexture& background, STexture& text) : background_(background), text_(text)
+SButton::SButton(const STexture& background, const STexture& text) 
+    : background_(background), text_(text)
 {   
     // assume that font texture is centered relative to background
     text_.setPosition((background.getWidth()  - text.getWidth()) >> 1, 

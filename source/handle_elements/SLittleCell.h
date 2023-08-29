@@ -19,10 +19,6 @@ public:
     void setValue(char value) noexcept;
     int getValue() const noexcept { return value_; }
 
-   // void setActive(bool is_active) noexcept { is_active_ = is_active; }
-   // bool isActive() const noexcept { return is_active_; }
-
-   // bool isValid() const; // SLittleCell is valid if it has the background
 private:
     // texture keeps cell width, height and position
     STexture* value_ptr_; // pointer to static memory from SCellFlyweight (needn't to be deleted!)

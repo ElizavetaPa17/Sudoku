@@ -6,8 +6,8 @@ void SBoard::handleEvents(SDL_Event &event) {
 
     // assume that all the cells are the same size
     if (x > getPosition().x && y > getPosition().y &&
-        x < getPosition().x + CELL_DIMEN * cell_width_ &&
-        y < getPosition().y + CELL_DIMEN * cell_height_) 
+        x < getPosition().x + SConstants::CELL_DIMEN * cell_width_ &&
+        y < getPosition().y + SConstants::CELL_DIMEN * cell_height_) 
     { // calculate destination
       // row corresponds to Y axis
       // column corresponds to X axi
@@ -29,16 +29,16 @@ void SBoard::handleEvents(SDL_Event &event) {
 void SBoard::render(SDL_Renderer *renderer) {
     cell_background_->render(renderer);
 
-    for (int i = 0; i < CELL_DIMEN; ++i) {
-        for (int j = 0; j < CELL_DIMEN; ++j) {
+    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
+        for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
             cells_[i][j].render(renderer);
         }
     }
 }
 
 void SBoard::setTexture(const std::shared_ptr<STexture> texture) {
-    cell_width_  = texture->getWidth() / CELL_DIMEN;
-    cell_height_ = texture->getHeight() / CELL_DIMEN;
+    cell_width_  = texture->getWidth() / SConstants::CELL_DIMEN;
+    cell_height_ = texture->getHeight() / SConstants::CELL_DIMEN;
 
     cell_background_ = texture; 
     setPosition({ 0, 0 });
@@ -63,7 +63,7 @@ std::pair<int, int> SBoard::checkCells() {
         }
     }
     
-    for (int col = active_cell_col + 1; col < CELL_DIMEN; ++col) {
+    for (int col = active_cell_col + 1; col < SConstants::CELL_DIMEN; ++col) {
         if (cells_[active_cell_row][col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
         {
             success_checking = false;
@@ -78,7 +78,7 @@ std::pair<int, int> SBoard::checkCells() {
         }
     }
     
-    for (int row = active_cell_row + 1; row < CELL_DIMEN; ++row) {
+    for (int row = active_cell_row + 1; row < SConstants::CELL_DIMEN; ++row) {
         if (cells_[row][active_cell_col].getValue() == cells_[active_cell_row][active_cell_col].getValue()) 
         {
             success_checking = false;
@@ -101,16 +101,16 @@ std::pair<int, int> SBoard::checkCells() {
 
 // check cells in the rectangle 3*3
 bool SBoard::checkRectCells(int row_offset, int col_offset) const {
-    int array[CELL_DIMEN] = {};
-    for (int i = row_offset; i < row_offset + CELL_DIMEN / 3; ++i) {
-        for (int j = col_offset; j < col_offset + CELL_DIMEN / 3; ++j) {
+    int array[SConstants::CELL_DIMEN] = {};
+    for (int i = row_offset; i < row_offset + SConstants::CELL_DIMEN / 3; ++i) {
+        for (int j = col_offset; j < col_offset + SConstants::CELL_DIMEN / 3; ++j) {
             if (cells_[i][j].getValue() != ' ') {
                 ++array[cells_[i][j].getValue() - 48]; // ASCII digit numbers start from 48
             }
         }
     }
 
-    for (int i = 0; i < CELL_DIMEN; ++i) {
+    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
         if (array[i] > 1) {
             return false;
         }
@@ -121,23 +121,11 @@ bool SBoard::checkRectCells(int row_offset, int col_offset) const {
 
 void SBoard::setPosition(SDL_Point point) {
     // all the cells have the same size
-    for (int i = 0; i < CELL_DIMEN; ++i) {
-        for (int j = 0; j < CELL_DIMEN; ++j) {
+    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
+        for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
             cells_[i][j].setPosition(SDL_Point({point.x + j * cell_width_, point.y + i * cell_height_ }));
         }
     }
 
     cell_background_->setPosition(point);
 }
-
-/*bool SBoard::isValid() const {
-    for (int i = 0; i < CELL_DIMEN; ++i) {
-        for (int j = 0; j < CELL_DIMEN; ++j) {
-            if (!cells_[i][j].isValid()) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}*/

@@ -4,6 +4,10 @@ SFont::SFont() : font_(nullptr)
 {
 }
 
+SFont::SFont(const std::string& path, int font_size) {
+    loadFromFile(path, font_size);
+}
+
 SFont::SFont(const SFont& font) {
     *this = font;
 }

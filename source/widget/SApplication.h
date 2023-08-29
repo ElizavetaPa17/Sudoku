@@ -9,6 +9,8 @@
 #include "../renderer/STexture.h"
 #include "../renderer/SFont.h"
 #include "../handle_elements/SBoard.h"
+#include "SScoreLabel.h"
+#include "STimerLabel.h"
 
 const int SCREEN_WIDTH  = 736;
 const int SCREEN_HEIGHT = 474;
@@ -32,8 +34,10 @@ private:
 
     static SApplication* instance_;
 
-    SDL_Window* window_;
+    SDL_Window*   window_;
     SDL_Renderer* renderer_;
-    SBoard board_;
-    STexture background_;
+    SBoard        board_;
+    STexture      background_;
+    SScoreLabel   score_label_;
+    STimerLabel   timer_label_;
 };

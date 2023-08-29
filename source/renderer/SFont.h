@@ -16,6 +16,7 @@ public:
     };
 
     SFont();
+    SFont(const std::string& path, int font_size);
     ~SFont() = default; // shared_ptr and deleter are responsible for the font deleting
 
     SFont(const SFont&);

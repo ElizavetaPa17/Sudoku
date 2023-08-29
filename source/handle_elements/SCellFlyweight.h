@@ -3,8 +3,8 @@
 #include <SDL2/SDL.h>
 
 #include "SLittleCell.h"
-
-const int SHARED_VALUE_COUNT = 11; // there are 10 different value (from 0 to 9) + ' ' (space or empty)
+#include "../renderer/SFont.h"
+#include "../resources/constants.h"
 
 class SCellFlyweight final {
 public:
@@ -15,5 +15,5 @@ public:
 private:
     SCellFlyweight() = default;
 
-    static STexture shared_cells_[SHARED_VALUE_COUNT];
+    static STexture shared_cells_[SConstants::SHARED_CELL_VALUE_COUNT];
 };

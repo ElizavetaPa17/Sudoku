@@ -6,7 +6,7 @@
 
 class SButton final {
 public:
-    SButton(STexture& background, STexture& text);
+    SButton(const STexture& background, const STexture& text);
     ~SButton() = default;
 
     SButton(const SButton&) = default;

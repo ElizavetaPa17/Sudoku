@@ -5,9 +5,7 @@
 #include <utility>
 
 #include "SLittleCell.h"
-
-const int CELL_DIMEN = 9;
-const int CELL_COUNT = CELL_DIMEN * CELL_DIMEN;
+#include "../resources/constants.h"
 
 class SBoard final {
 public:
@@ -32,7 +30,7 @@ public:
 private:
     bool checkRectCells(int row_offset, int col_offset) const;
 
-    SLittleCell cells_[CELL_DIMEN][CELL_DIMEN];
+    SLittleCell cells_[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN];
     std::shared_ptr<STexture> cell_background_;    
 
     int cell_width_  = 0;
