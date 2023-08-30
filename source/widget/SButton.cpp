@@ -29,12 +29,18 @@ void SButton::render(SDL_Renderer* renderer) {
     text_.render(renderer);
 }
 
+void SButton::setUp(const STexture &background, const STexture &text) {
+    background_ = background;
+    text_ = text;
+
+    setPosition(background.getPosition());
+}
+
 // assume that font texture is centered relative to background 
 void SButton::setPosition(SDL_Point position) {
-    int offset_x = text_.getPosition().x - background_.getPosition().x;
-    int offset_y = text_.getPosition().y - background_.getPosition().y;
-
-    text_.setPosition(position.x + offset_x, position.y + offset_y);
     background_.setPosition(position);
-
+    
+    int text_pos_x = ((background_.getWidth() - text_.getWidth()) >> 1) + background_.getPosition().x;
+    int text_pos_y = ((background_.getHeight() - text_.getHeight()) >> 1) + background_.getPosition().y;;
+    text_.setPosition({ text_pos_x, text_pos_y });
 }

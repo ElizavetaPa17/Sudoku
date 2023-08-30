@@ -11,8 +11,9 @@ class STimerLabel final {
 public:
     STimerLabel() = default;
 
-    void render(SDL_Renderer* renderer);
+    // must be setup before using. set texture and load: font.
     void setUp(SDL_Renderer* renderer, const STexture& background_texture);
+    void render(SDL_Renderer* renderer);
 
     // assume that label position is background position
     void setPosition(SDL_Point position);
@@ -21,6 +22,8 @@ public:
     void stopTimer();
     void pauseTimer();
     void unpauseTimer();
+
+    int  getPastTicks();
 
 private:
     void updateTimer(SDL_Renderer* renderer);

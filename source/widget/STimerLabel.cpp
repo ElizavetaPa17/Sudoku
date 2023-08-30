@@ -53,3 +53,7 @@ void STimerLabel::pauseTimer() {
 void STimerLabel::unpauseTimer() {
     timer_.unpause();
 }
+
+int STimerLabel::getPastTicks() {
+    return timer_.getTicks();    
+}

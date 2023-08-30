@@ -10,7 +10,7 @@ public:
     
     void render(SDL_Renderer* renderer);
 
-    // set texture, load font, set initial score value (zero)
+    // must be set up before using. set texture, load font, set initial score value (zero)
     void setUp(SDL_Renderer* renderer, const STexture& background);
 
     void setScore(SDL_Renderer* renderer, int score);

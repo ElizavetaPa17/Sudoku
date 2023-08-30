@@ -6,6 +6,7 @@
 
 class SButton final {
 public:
+    SButton() = default;
     SButton(const STexture& background, const STexture& text);
     ~SButton() = default;
 
@@ -15,6 +16,8 @@ public:
     SButton(SButton&&) = default;
     SButton& operator=(SButton&&) = default;
 
+    // must be set up before using
+    void setUp(const STexture& background, const STexture& text);
     void handleEvents(SDL_Event& event);
     void render(SDL_Renderer* renderer);
 

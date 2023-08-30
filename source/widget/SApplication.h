@@ -8,9 +8,8 @@
 #include "../handle_elements/STimer.h"
 #include "../renderer/STexture.h"
 #include "../renderer/SFont.h"
-#include "../handle_elements/SBoard.h"
-#include "SScoreLabel.h"
-#include "STimerLabel.h"
+#include "SChooseLevelDialog.h"
+#include "SGameEnvironment.h"
 
 const int SCREEN_WIDTH  = 736;
 const int SCREEN_HEIGHT = 474;
@@ -36,8 +35,8 @@ private:
 
     SDL_Window*   window_;
     SDL_Renderer* renderer_;
-    SBoard        board_;
+    
     STexture      background_;
-    SScoreLabel   score_label_;
-    STimerLabel   timer_label_;
+    SChooseLevelDialog choose_level_dialog_;
+    SGameEnvironment game_environment_;
 };

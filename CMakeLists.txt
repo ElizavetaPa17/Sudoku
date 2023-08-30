@@ -20,6 +20,8 @@ set(SourceList "${CMAKE_CURRENT_SOURCE_DIR}/source/widget/SApplication.cpp"
                "${CMAKE_CURRENT_SOURCE_DIR}/source/handle_elements/SCellFlyweight.cpp"
                "${CMAKE_CURRENT_SOURCE_DIR}/source/widget/SScoreLabel.cpp"
                "${CMAKE_CURRENT_SOURCE_DIR}/source/widget/STimerLabel.cpp"
+               "${CMAKE_CURRENT_SOURCE_DIR}/source/widget/SChooseLevelDialog.cpp"
+               "${CMAKE_CURRENT_SOURCE_DIR}/source/widget/SGameEnvironment.cpp"
     )
 
 add_definitions(-DSDL_MAIN_HANDLED)
