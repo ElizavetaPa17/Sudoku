@@ -3,8 +3,9 @@
 #include <SDL2/SDL.h>
 
 #include "../renderer/STexture.h"
+#include "SWidget.h"
 
-class SButton final {
+class SButton : public SWidget {
 public:
     SButton() = default;
     SButton(const STexture& background, const STexture& text);
@@ -16,21 +17,18 @@ public:
     SButton(SButton&&) = default;
     SButton& operator=(SButton&&) = default;
 
+    void handleChildEvent(SWidget* child) override;
+    void sendParentEvent() override;
+
     // must be set up before using
-    void setUp(const STexture& background, const STexture& text);
+    void setUp(SWidget* parent, const STexture& background, const STexture& text);
     void handleEvents(SDL_Event& event);
     void render(SDL_Renderer* renderer);
 
     // the position is the top left point. it assigns background position.
     // text position calculate with offset
     void setPosition(SDL_Point position);
-    SDL_Point getPosition() const { return background_.getPosition(); }
-
-    // assume that background_ is bigger than text
-    int getWidth() const  { return background_.getWidth(); }
-    int getHeight() const { return background_.getHeight(); }
-
 private:
-    STexture background_;
-    STexture text_;
+    STexture background_texture;
+    STexture text_texture;
 };

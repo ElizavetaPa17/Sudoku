@@ -10,14 +10,16 @@
 #include "../renderer/SFont.h"
 #include "SChooseLevelDialog.h"
 #include "SGameEnvironment.h"
+#include "../resources/constants.h"
 
-const int SCREEN_WIDTH  = 736;
-const int SCREEN_HEIGHT = 474;
 
 // Singleton
-class SApplication final {
-public:
+class SApplication : public SWidget {
+public:    
     static SApplication* getIntance();
+
+    void handleChildEvent(SWidget* child) override;
+    void sendParentEvent() override;
 
     // setup Application environment and resources
     bool init();
@@ -29,6 +31,9 @@ public:
     void quit();
 
 private:
+    bool runChooseLevelDialog();
+    void runGame();
+
     SApplication() = default;
 
     static SApplication* instance_;

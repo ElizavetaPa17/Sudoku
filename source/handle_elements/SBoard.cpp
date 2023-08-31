@@ -4,7 +4,6 @@ void SBoard::handleEvents(SDL_Event &event) {
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    // assume that all the cells are the same size
     if (x > getPosition().x && y > getPosition().y &&
         x < getPosition().x + SConstants::CELL_DIMEN * cell_width_ &&
         y < getPosition().y + SConstants::CELL_DIMEN * cell_height_) 
@@ -15,19 +14,19 @@ void SBoard::handleEvents(SDL_Event &event) {
       int current_cell_col  = (x - getPosition().x) / cell_width_;
 
       // if there any collision and user isn't fixing it we ignore any other input
-      //std::cerr << is_collision_ << '\n';
       if (is_collision_ && 
          (active_cell_.first != current_cell_row || active_cell_.second != current_cell_col)) {
           return;
       } else {
           active_cell_ = { current_cell_row, current_cell_col };
           cells_[current_cell_row][current_cell_col].handleEvents(event); 
+          checkCells();
       }
     }
 }
 
 void SBoard::render(SDL_Renderer *renderer) {
-    cell_background_->render(renderer);
+    cell_background_.render(renderer);
 
     for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
         for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
@@ -36,19 +35,19 @@ void SBoard::render(SDL_Renderer *renderer) {
     }
 }
 
-void SBoard::setTexture(const std::shared_ptr<STexture> texture) {
-    cell_width_  = texture->getWidth() / SConstants::CELL_DIMEN;
-    cell_height_ = texture->getHeight() / SConstants::CELL_DIMEN;
+void SBoard::setTexture(const STexture& texture) {
+    cell_width_  = texture.getWidth() / SConstants::CELL_DIMEN;
+    cell_height_ = texture.getHeight() / SConstants::CELL_DIMEN;
 
     cell_background_ = texture; 
     setPosition({ 0, 0 });
 }
 
-std::pair<int, int> SBoard::checkCells() {
+void SBoard::checkCells() {
     // if active cell is space there can't be collisions
     if (cells_[active_cell_.first][active_cell_.second].getValue() == ' ') {
         is_collision_ = false; // the user resets the cell (no collision)
-        return std::pair{ -1, -1 };
+        return;
     }
 
     int active_cell_row = active_cell_.first;
@@ -85,17 +84,17 @@ std::pair<int, int> SBoard::checkCells() {
         }
     }
 
-    if (success_checking && !checkRectCells(active_cell_.first, active_cell_.second)) {
+    // calculate 3*3 rectangle for checking
+    if (success_checking && !checkRectCells((active_cell_.first / 3) * 3, (active_cell_.second / 3) * 3)) {
+        std::cerr << 5 << '\n';
         success_checking = false;
     }
 
     // there isn't any collision
     if (success_checking) {
         is_collision_ = false;
-        return std::pair{ -1, -1 };
     } else {
         is_collision_ = true;
-        return active_cell_;
     }
 }
 
@@ -127,5 +126,5 @@ void SBoard::setPosition(SDL_Point point) {
         }
     }
 
-    cell_background_->setPosition(point);
+    cell_background_.setPosition(point);
 }

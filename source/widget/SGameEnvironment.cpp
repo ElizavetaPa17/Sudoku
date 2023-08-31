@@ -1,8 +1,18 @@
 #include "SGameEnvironment.h"
 
-void SGameEnvironment::setUp(SDL_Renderer* renderer) {
-    std::shared_ptr<STexture> board_texture = std::make_shared<STexture>();
-    board_texture->loadFromFile(renderer, "picture/board.png");
+void SGameEnvironment::handleChildEvent(SWidget *child) {
+    SWidget::handleChildEvent(child);
+}
+
+void SGameEnvironment::sendParentEvent() {
+    SWidget::sendParentEvent();
+}
+
+void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
+    parent_ = parent;
+
+    STexture board_texture;
+    board_texture.loadFromFile(renderer, "picture/board.png");
 
     board_.setTexture(board_texture);
     board_.setPosition({ 35, 35 });
@@ -18,10 +28,16 @@ void SGameEnvironment::setUp(SDL_Renderer* renderer) {
     timer_label_.setPosition({ 458, 100 });
 }
 
+void SGameEnvironment::setGameLevel(SDL_Renderer* renderer, SConstants::GameLevel game_level) {
+    game_level_label_.setUp(renderer, game_level);
+    game_level_label_.setPosition({ 458, 165 });
+}
+
 void SGameEnvironment::render(SDL_Renderer *renderer) {
     board_.render(renderer);
     score_label_.render(renderer);
     timer_label_.render(renderer);
+    game_level_label_.render(renderer);
 }
 
 void SGameEnvironment::handleEvents(SDL_Event &event) {

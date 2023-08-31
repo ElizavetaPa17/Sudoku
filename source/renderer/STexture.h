@@ -25,7 +25,7 @@ public:
 
     bool loadFromFile(SDL_Renderer* renderer, const std::string& path);
     bool createTextureFromSurface(SDL_Renderer* renderer, SDL_Surface* surface);
-    void setTexture(std::shared_ptr<SDL_Texture>& texture);
+//    void setTexture(std::shared_ptr<SDL_Texture>& texture);
 
     void render(SDL_Renderer* renderer, const SDL_Rect* clip = nullptr,
                 double angle = 0.0, const SDL_Point* rotating_center = nullptr);

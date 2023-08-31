@@ -1,7 +1,7 @@
 #include "SLittleCell.h"
 
 SLittleCell::SLittleCell() 
-    : value_ptr_(), position_({ 0, 0 }), value_(0)
+    : value_ptr_(), position_({ 0, 0 }), value_(' ')
 {
     setValue(' ');
 }

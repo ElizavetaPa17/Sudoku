@@ -88,11 +88,11 @@ bool STexture::createTextureFromSurface(SDL_Renderer *renderer, SDL_Surface *sur
     }
 }
 
-void STexture::setTexture(std::shared_ptr<SDL_Texture>& texture) {
+/*void STexture::setTexture(std::shared_ptr<SDL_Texture>& texture) {
     texture_ = texture;
     // getting the information about new texture;
     SDL_QueryTexture(texture_.get(), nullptr, nullptr, &width_, &height_);
-}
+}*/
 
 // the object must contain valid pointer in order of optimization. so the checking isn't provided.
 void STexture::render(SDL_Renderer* renderer, const SDL_Rect* clip, 

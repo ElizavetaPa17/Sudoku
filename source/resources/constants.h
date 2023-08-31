@@ -2,6 +2,9 @@
 #include <SDL2/SDL.h>
 
 namespace SConstants {
+    constexpr int SCREEN_WIDTH  = 736;
+    constexpr int SCREEN_HEIGHT = 474;
+    
     constexpr int CELL_DIMEN = 9;
     constexpr int CELL_COUNT = CELL_DIMEN * CELL_DIMEN;
 
@@ -14,4 +17,11 @@ namespace SConstants {
     constexpr int SCORE_VALUE_OFFSET_Y = 0;
 
     constexpr SDL_Color FONT_COLOR = { 0x42, 0x25, 0x15 };
+
+    enum class GameLevel {
+        EASY_LEVEL,
+        MIDDLE_LEVEL,
+        HARD_LEVEL,
+        NOT_SELECTED,
+    };
 }

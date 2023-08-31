@@ -10,6 +10,15 @@ SApplication* SApplication::getIntance() {
     return instance_;
 }
 
+// choose_level_dialog_ events are ignored (runChooseLevelDialog loop handles game level selection)
+void SApplication::handleChildEvent(SWidget *child) {
+    SWidget::handleChildEvent(child);
+}
+
+void SApplication::sendParentEvent() {
+    SWidget::sendParentEvent();
+}
+
 bool SApplication::init() {
     if (!InitExitManager::init(SDL_INIT_VIDEO | SDL_INIT_AUDIO, IMG_INIT_JPG | IMG_INIT_PNG)) {
         std::cerr << "Application error.\n";
@@ -18,7 +27,8 @@ bool SApplication::init() {
         return false;
     } else {
         window_ = SDL_CreateWindow("Sudoku", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                              SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+                                             SConstants::SCREEN_WIDTH, SConstants::SCREEN_HEIGHT, 
+                                             SDL_WINDOW_SHOWN);
 
         renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 
@@ -30,38 +40,74 @@ bool SApplication::init() {
         
         background_.loadFromFile(renderer_, "picture/background.png");
 
-        choose_level_dialog_.setUp(renderer_);
-        game_environment_.setUp(renderer_);
+        choose_level_dialog_.setUp(this, renderer_);
+        choose_level_dialog_.setPosition({ 140, 120 });
+
+        game_environment_.setUp(this, renderer_);
 
         return true;
     }
 }
 
 void SApplication::run() {
-    bool quit = false;
-        SDL_Event event;
-        SDL_Point point = { 10, 10 };
-        game_environment_.startTimer();
+    if (runChooseLevelDialog()) {
+        runGame();
+    }
 
-        while (!quit) {
-            while(SDL_PollEvent(&event)) {
-                if (event.type == SDL_QUIT) {
-                    quit = true;
-                }
-                
-                game_environment_.handleEvents(event);
+    quit();
+}
+
+bool SApplication::runChooseLevelDialog() {
+    bool quit   = false;
+    SDL_Event event;
+    
+    while (!quit && choose_level_dialog_.getGameLevel() == SConstants::GameLevel::NOT_SELECTED) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
             }
 
-            SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
-            SDL_RenderClear(renderer_);
-            
-            background_.render(renderer_);
-            game_environment_.render(renderer_);
-
-            choose_level_dialog_.render(renderer_);
-
-            SDL_RenderPresent(renderer_);
+            choose_level_dialog_.handleEvents(event);
         }
+
+        SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer_);
+
+        background_.render(renderer_);
+        choose_level_dialog_.render(renderer_);
+
+        SDL_RenderPresent(renderer_);
+    }
+
+    if (quit) {
+        return false;     
+    } else { // the user choose game level 
+        game_environment_.setGameLevel(renderer_, choose_level_dialog_.getGameLevel());
+        return true;
+    }
+}
+
+void SApplication::runGame() {
+    bool quit = false;
+    SDL_Event event;
+
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            }
+
+            game_environment_.handleEvents(event);
+        }
+
+        SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer_);
+
+        background_.render(renderer_);
+        game_environment_.render(renderer_);
+
+        SDL_RenderPresent(renderer_);
+    }
 }
 
 void SApplication::quit() {

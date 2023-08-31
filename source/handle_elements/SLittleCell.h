@@ -14,10 +14,9 @@ public:
     void render(SDL_Renderer* renderer);
 
     void setPosition(SDL_Point position) noexcept { position_ = position; }
-    SDL_Point getPosition() const noexcept { return position_; }
     
     void setValue(char value) noexcept;
-    int getValue() const noexcept { return value_; }
+    char getValue() const noexcept { return value_; }
 
 private:
     // texture keeps cell width, height and position

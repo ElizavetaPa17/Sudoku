@@ -1,6 +1,24 @@
 #include "SChooseLevelDialog.h"
 
-void SChooseLevelDialog::setUp(SDL_Renderer* renderer) {
+void SChooseLevelDialog::handleChildEvent(SWidget *child) {
+    if (&easy_level_button_ == child) {
+        game_level_ = SConstants::GameLevel::EASY_LEVEL;
+    } else if (&middle_level_button_ == child) {
+        game_level_ = SConstants::GameLevel::MIDDLE_LEVEL;
+    } else if (&hard_level_button_ == child) {
+        game_level_ = SConstants::GameLevel::HARD_LEVEL;
+    }
+
+    sendParentEvent();
+}
+
+void SChooseLevelDialog::sendParentEvent() {
+    parent_->handleChildEvent(this);
+}
+
+void SChooseLevelDialog::setUp(SWidget* parent, SDL_Renderer* renderer) {
+    parent_ = parent;
+
     background_texture_.loadFromFile(renderer, "picture/choose_level_dialog.png");
 
     STexture button_texture;
@@ -10,11 +28,11 @@ void SChooseLevelDialog::setUp(SDL_Renderer* renderer) {
 
     font.createFontTexture(renderer, "EASY", SConstants::FONT_COLOR);
 
-    easy_level_button_.setUp(button_texture, 
+    easy_level_button_.setUp(this, button_texture, 
                              font.createFontTexture(renderer, "EASY", SConstants::FONT_COLOR));
-    middle_level_button_.setUp(button_texture, 
+    middle_level_button_.setUp(this, button_texture, 
                                font.createFontTexture(renderer, "MIDDLE", SConstants::FONT_COLOR));
-    hard_level_button_.setUp(button_texture, 
+    hard_level_button_.setUp(this, button_texture, 
                              font.createFontTexture(renderer, "HARD", SConstants::FONT_COLOR));
 
     setPosition({ 0, 0 });
@@ -27,9 +45,19 @@ void SChooseLevelDialog::render(SDL_Renderer *renderer) {
     hard_level_button_.render(renderer);
 }
 
+void SChooseLevelDialog::handleEvents(SDL_Event &event) {
+    easy_level_button_.handleEvents(event);
+    middle_level_button_.handleEvents(event);
+    hard_level_button_.handleEvents(event);
+}
+
 void SChooseLevelDialog::setPosition(SDL_Point position) {
     background_texture_.setPosition(position);
     easy_level_button_.setPosition({ position.x + 22, position.y + 130 });
     middle_level_button_.setPosition({ position.x + 162, position.y + 130 });
     hard_level_button_.setPosition({ position.x + 302, position.y + 130 });
+}
+
+typename SConstants::GameLevel SChooseLevelDialog::getGameLevel() {
+    return game_level_;
 }

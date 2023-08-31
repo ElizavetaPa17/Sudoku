@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <memory>
 #include <utility>
 
 #include "SLittleCell.h"
@@ -16,28 +15,26 @@ public:
 
     void handleEvents(SDL_Event& event);
     void render(SDL_Renderer* renderer);
-    void setTexture(const std::shared_ptr<STexture> texture);
+    void setTexture(const STexture& texture);
 
     // return pair comprises the row and column of the collision
     // if there isn't any collision return pair(-1, -1)
-    std::pair<int, int> checkCells();
+    void checkCells();
 
     void setPosition(SDL_Point point);
-    SDL_Point getPosition() const noexcept { return cells_[0][0].getPosition(); }
-
-//    bool isValid() const; // return true if all the cells are valid (has background texture)
+    SDL_Point getPosition() { return cell_background_.getPosition(); }
 
 private:
     bool checkRectCells(int row_offset, int col_offset) const;
 
     SLittleCell cells_[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN];
-    std::shared_ptr<STexture> cell_background_;    
+    STexture cell_background_;    
 
     int cell_width_  = 0;
     int cell_height_ = 0; 
 
     // the cell that handles user input at the moment
     // comprises  row and collumn
-    std::pair<int, int> active_cell_;
+    std::pair<int, int> active_cell_ = { -1, -1 };
     bool is_collision_ = false;
 };
