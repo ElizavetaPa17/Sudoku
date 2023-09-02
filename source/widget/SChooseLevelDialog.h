@@ -25,7 +25,7 @@ public:
 private:
     STexture background_texture_;
     SButton  easy_level_button_;
-    SButton  middle_level_button_;
+    SButton  medium_level_button_;
     SButton  hard_level_button_;
 
     typename SConstants::GameLevel game_level_ = SConstants::GameLevel::NOT_SELECTED;

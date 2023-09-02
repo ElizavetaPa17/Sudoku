@@ -10,6 +10,7 @@
 #include "../widget/STimerLabel.h"
 #include "../widget/SGameLevelLabel.h"
 #include "SWidget.h"
+#include "SButton.h"
 
 class SGameEnvironment : public SWidget {
 public:
@@ -38,4 +39,12 @@ private:
    SScoreLabel score_label_;
    STimerLabel timer_label_;
    SGameLevelLabel game_level_label_;
+
+   SButton voice_button_;
+   SButton rules_button_;
+   SButton opened_hint_button_;
+   SButton closed_hint_button_;
+   SButton quit_game_button_;
+
+   bool is_opened_hint = false;
 };

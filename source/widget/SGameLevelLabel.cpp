@@ -11,7 +11,7 @@ void SGameLevelLabel::setUp(SDL_Renderer* renderer, SConstants::GameLevel game_l
             break;;
         }
         case SConstants::GameLevel::MIDDLE_LEVEL: {
-            background_.loadFromFile(renderer, "picture/middle_level_label.png");
+            background_.loadFromFile(renderer, "picture/medium_level_label.png");
             break;
         }
         case SConstants::GameLevel::HARD_LEVEL: {

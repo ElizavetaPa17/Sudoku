@@ -8,7 +8,7 @@
 class SButton : public SWidget {
 public:
     SButton() = default;
-    SButton(const STexture& background, const STexture& text);
+    SButton(const STexture& background);
     ~SButton() = default;
 
     SButton(const SButton&) = default;
@@ -21,7 +21,7 @@ public:
     void sendParentEvent() override;
 
     // must be set up before using
-    void setUp(SWidget* parent, const STexture& background, const STexture& text);
+    void setUp(SWidget* parent, const STexture& background);
     void handleEvents(SDL_Event& event);
     void render(SDL_Renderer* renderer);
 
@@ -30,5 +30,4 @@ public:
     void setPosition(SDL_Point position);
 private:
     STexture background_texture;
-    STexture text_texture;
 };

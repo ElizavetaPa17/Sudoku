@@ -1,11 +1,8 @@
 #include "SButton.h"
 
-SButton::SButton(const STexture& background, const STexture& text) 
-    : background_texture(background), text_texture(text)
+SButton::SButton(const STexture& background) 
+    : background_texture(background)
 {   
-    // assume that font texture is centered relative to background
-    text_texture.setPosition((background.getWidth()  - text.getWidth()) >> 1, 
-                      (background.getHeight() - text.getHeight()) >> 1);
 }
 
 //default realization
@@ -37,13 +34,11 @@ void SButton::handleEvents(SDL_Event &event) {
 
 void SButton::render(SDL_Renderer* renderer) {
     background_texture.render(renderer);
-    text_texture.render(renderer);
 }
 
-void SButton::setUp(SWidget* parent, const STexture &background, const STexture &text) {
+void SButton::setUp(SWidget* parent, const STexture &background) {
     parent_ = parent;
     background_texture = background;
-    text_texture = text;
 
     setPosition(background.getPosition());
 }
@@ -51,10 +46,4 @@ void SButton::setUp(SWidget* parent, const STexture &background, const STexture 
 // assume that font texture is centered relative to background 
 void SButton::setPosition(SDL_Point position) {
     background_texture.setPosition(position);
-    
-    int text_pos_x = ((background_texture.getWidth() - text_texture.getWidth()) >> 1) + 
-                       background_texture.getPosition().x;
-    int text_pos_y = ((background_texture.getHeight() - text_texture.getHeight()) >> 1) +
-                       background_texture.getPosition().y;;
-    text_texture.setPosition({ text_pos_x, text_pos_y });
 }
