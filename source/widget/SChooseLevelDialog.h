@@ -20,7 +20,8 @@ public:
     void handleEvents(SDL_Event& event);
 
     void setPosition(SDL_Point position);
-    typename SConstants::GameLevel getGameLevel();
+    SConstants::GameLevel getGameLevel();
+    void reset();
 
 private:
     STexture background_texture_;
@@ -28,5 +29,5 @@ private:
     SButton  medium_level_button_;
     SButton  hard_level_button_;
 
-    typename SConstants::GameLevel game_level_ = SConstants::GameLevel::NOT_SELECTED;
+    SConstants::GameLevel game_level_ = SConstants::GameLevel::NOT_SELECTED;
 };

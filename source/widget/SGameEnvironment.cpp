@@ -1,11 +1,30 @@
 #include "SGameEnvironment.h"
 
 void SGameEnvironment::handleChildEvent(SWidget *child) {
-    SWidget::handleChildEvent(child);
+    if (&voice_button_ == child) {
+        /* TODO */
+    } else if (&rules_button_ == child) {
+        /* TODO */
+    } else if (&closed_hint_button_ == child) {
+        is_opened_hint_ = !is_opened_hint_; // closed_hint_button and closed_hint_button_ have the same 
+                                          // position. So just switch the boolean and rendering button
+    } else if (&quit_game_button_ == child) {
+        timer_label_.pauseTimer();
+        displ_exit_dialog_ = true;
+    } else if (&exit_game_dialog_ == child && displ_exit_dialog_) {
+        game_state_ = exit_game_dialog_.getGameState();
+
+        if (game_state_ == SConstants::GameState::QUIT) {
+            sendParentEvent();
+        } else {
+            timer_label_.unpauseTimer();
+            displ_exit_dialog_ = false;
+        }
+    }
 }
 
 void SGameEnvironment::sendParentEvent() {
-    SWidget::sendParentEvent();
+    parent_->handleChildEvent(this);
 }
 
 void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
@@ -16,6 +35,9 @@ void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
 
     board_.setTexture(buffer_texture);
     board_.setPosition({ 35, 35 });
+
+    exit_game_dialog_.setUp(this, renderer);
+    exit_game_dialog_.setPosition({ 230, 170 });
 
     buffer_texture.loadFromFile(renderer, "picture/score_board.png");        
     score_label_.setUp(renderer,buffer_texture);
@@ -60,41 +82,47 @@ void SGameEnvironment::render(SDL_Renderer *renderer) {
     voice_button_.render(renderer);
     rules_button_.render(renderer);
 
-    if (is_opened_hint) {
+    if (is_opened_hint_) {
         opened_hint_button_.render(renderer);
     } else {
         closed_hint_button_.render(renderer);
     }
+
     quit_game_button_.render(renderer);
+
+    if (displ_exit_dialog_) {
+        exit_game_dialog_.render(renderer);
+    }
 }
 
 void SGameEnvironment::handleEvents(SDL_Event &event) {
-    board_.handleEvents(event);
-    voice_button_.handleEvents(event);
-    rules_button_.handleEvents(event);
-    closed_hint_button_.handleEvents(event);
-    opened_hint_button_.handleEvents(event);
-    quit_game_button_.handleEvents(event);
+    if (displ_exit_dialog_) {
+        exit_game_dialog_.handleEvents(event);
+    } else {
+        board_.handleEvents(event);
+        voice_button_.handleEvents(event);
+        rules_button_.handleEvents(event);
+        closed_hint_button_.handleEvents(event);
+        opened_hint_button_.handleEvents(event);
+        quit_game_button_.handleEvents(event);
+    }
 }
 
-void SGameEnvironment::startTimer() {
-    timer_label_.startTimer();
-}
-
-void SGameEnvironment::stopTimer() {
+void SGameEnvironment::reset() {
+    // reset timer
     timer_label_.stopTimer();
-}
+    timer_label_.startTimer();
 
-void SGameEnvironment::pauseTimer() {
-    timer_label_.pauseTimer();
-}
-
-void SGameEnvironment::unpauseTimer() {
-    timer_label_.unpauseTimer();
+    is_opened_hint_ = displ_exit_dialog_ = false;
+    board_.reset();
 }
 
 int SGameEnvironment::getPastTicks() {
     return timer_label_.getPastTicks();
+}
+
+SConstants::GameState SGameEnvironment::getGameState() {
+    return game_state_;
 }
 
 void SGameEnvironment::setScore(SDL_Renderer* renderer, int value) {

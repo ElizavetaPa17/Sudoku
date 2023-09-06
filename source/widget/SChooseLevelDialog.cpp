@@ -54,6 +54,10 @@ void SChooseLevelDialog::setPosition(SDL_Point position) {
     hard_level_button_.setPosition({ position.x + 302, position.y + 130 });
 }
 
-typename SConstants::GameLevel SChooseLevelDialog::getGameLevel() {
+SConstants::GameLevel SChooseLevelDialog::getGameLevel() {
     return game_level_;
+}
+
+void SChooseLevelDialog::reset() {
+    game_level_ = SConstants::GameLevel::NOT_SELECTED;
 }

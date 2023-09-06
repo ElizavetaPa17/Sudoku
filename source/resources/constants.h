@@ -24,4 +24,11 @@ namespace SConstants {
         HARD_LEVEL,
         NOT_SELECTED,
     };
+
+    enum class GameState {
+        PLAY,
+        VOICE_SETTING, 
+        RULES_CHECKING,
+        QUIT,
+    };
 }

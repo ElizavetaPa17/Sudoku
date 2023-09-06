@@ -9,9 +9,9 @@
 #include "../renderer/STexture.h"
 #include "../renderer/SFont.h"
 #include "SChooseLevelDialog.h"
+#include "SExitGameDialog.h"
 #include "SGameEnvironment.h"
 #include "../resources/constants.h"
-
 
 // Singleton
 class SApplication : public SWidget {
@@ -32,6 +32,7 @@ public:
 
 private:
     bool runChooseLevelDialog();
+    bool runExitGameDialog();
     void runGame();
 
     SApplication() = default;
@@ -42,6 +43,8 @@ private:
     SDL_Renderer* renderer_;
     
     STexture      background_;
-    SChooseLevelDialog choose_level_dialog_;
     SGameEnvironment game_environment_;
+    SChooseLevelDialog choose_level_dialog_;
+
+    bool displ_choose_dialog_ = false;
 };

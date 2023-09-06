@@ -1,4 +1,5 @@
-#include "SApplication.h"
+ #include "SApplication.h"
+#include <math.h>
 
 SApplication* SApplication::instance_ = nullptr;
 
@@ -12,7 +13,14 @@ SApplication* SApplication::getIntance() {
 
 // choose_level_dialog_ events are ignored (runChooseLevelDialog loop handles game level selection)
 void SApplication::handleChildEvent(SWidget *child) {
-    SWidget::handleChildEvent(child);
+    if (&game_environment_ == child) {
+        switch (game_environment_.getGameState()) {
+            case SConstants::GameState::QUIT : {
+                displ_choose_dialog_ = true;
+                choose_level_dialog_.reset();
+            }
+        }
+    }
 }
 
 void SApplication::sendParentEvent() {
@@ -42,6 +50,7 @@ bool SApplication::init() {
 
         choose_level_dialog_.setUp(this, renderer_);
         choose_level_dialog_.setPosition({ 140, 120 });
+    
 
         game_environment_.setUp(this, renderer_);
 
@@ -50,18 +59,23 @@ bool SApplication::init() {
 }
 
 void SApplication::run() {
-    if (runChooseLevelDialog()) {
-        runGame();
-    }
+    do {
+        if (runChooseLevelDialog()) {
+            displ_choose_dialog_ = false;
+            runGame();
+        }
+
+        std::cerr << "here\n";
+    } while (displ_choose_dialog_);
 
     quit();
 }
 
 bool SApplication::runChooseLevelDialog() {
-    bool quit   = false;
+    bool quit = false;
     SDL_Event event;
     
-    while (!quit && choose_level_dialog_.getGameLevel() == SConstants::GameLevel::NOT_SELECTED) {
+    while (!quit && (choose_level_dialog_.getGameLevel() == SConstants::GameLevel::NOT_SELECTED)) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;
@@ -91,7 +105,9 @@ void SApplication::runGame() {
     bool quit = false;
     SDL_Event event;
 
-    while (!quit) {
+    game_environment_.reset();
+
+    while (!quit && !displ_choose_dialog_) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;

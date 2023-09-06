@@ -86,7 +86,6 @@ void SBoard::checkCells() {
 
     // calculate 3*3 rectangle for checking
     if (success_checking && !checkRectCells((active_cell_.first / 3) * 3, (active_cell_.second / 3) * 3)) {
-        std::cerr << 5 << '\n';
         success_checking = false;
     }
 
@@ -116,6 +115,17 @@ bool SBoard::checkRectCells(int row_offset, int col_offset) const {
     }
 
     return true;
+}
+
+void SBoard::reset() {
+    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
+        for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
+            cells_[i][j].setValue(' ');
+        }
+    }
+
+    active_cell_ = { -1, -1 };
+    is_collision_ = false;
 }
 
 void SBoard::setPosition(SDL_Point point) {

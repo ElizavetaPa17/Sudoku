@@ -20,6 +20,7 @@ public:
     // return pair comprises the row and column of the collision
     // if there isn't any collision return pair(-1, -1)
     void checkCells();
+    void reset();
 
     void setPosition(SDL_Point point);
     SDL_Point getPosition() { return cell_background_.getPosition(); }
