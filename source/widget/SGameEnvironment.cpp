@@ -51,8 +51,11 @@ void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
     voice_button_.setUp(this, buffer_texture);
     voice_button_.setPosition({ 460, 230 });
 
+    STexture hint_texture;
+    hint_texture.loadFromFile(renderer, "picture/rules_hint_menu.png");
     buffer_texture.loadFromFile(renderer, "picture/show_rules_button.png");
-    rules_button_.setUp(this, buffer_texture);
+
+    rules_button_.setUp(this, buffer_texture, hint_texture);
     rules_button_.setPosition({ 525, 230 });
 
     buffer_texture.loadFromFile(renderer, "picture/show_hint_button.png");

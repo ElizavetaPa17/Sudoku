@@ -6,12 +6,13 @@
 #include "../resources/constants.h"
 #include "../handle_elements/SBoard.h"
 #include "../renderer/STexture.h"
-#include "../widget/SScoreLabel.h"
-#include "../widget/STimerLabel.h"
-#include "../widget/SGameLevelLabel.h"
-#include "../widget/SExitGameDialog.h"
+#include "SScoreLabel.h"
+#include "STimerLabel.h"
+#include "SGameLevelLabel.h"
+#include "SExitGameDialog.h"
 #include "SWidget.h"
 #include "SButton.h"
+#include "SRulesButton.h"
 
 class SGameEnvironment : public SWidget {
 public:
@@ -44,7 +45,7 @@ private:
    SGameLevelLabel game_level_label_;
 
    SButton voice_button_;
-   SButton rules_button_;
+   SRulesButton rules_button_;
    SButton opened_hint_button_;
    SButton closed_hint_button_;
    SButton quit_game_button_;

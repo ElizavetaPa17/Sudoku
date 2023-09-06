@@ -65,7 +65,6 @@ void SApplication::run() {
             runGame();
         }
 
-        std::cerr << "here\n";
     } while (displ_choose_dialog_);
 
     quit();

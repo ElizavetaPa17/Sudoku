@@ -1,4 +1,5 @@
 #include "widget/SApplication.h"
+#include <cstdlib>
 
 int main() {
     if (!SApplication::getIntance()->init()) {
@@ -6,5 +7,5 @@ int main() {
     }
 
     SApplication::getIntance()->run();
-    SApplication::getIntance()->quit();
+    SApplication::getIntance()->quit(); 
 }

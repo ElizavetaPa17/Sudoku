@@ -31,4 +31,6 @@ namespace SConstants {
         RULES_CHECKING,
         QUIT,
     };
+   
+    constexpr SDL_Point RULES_HINT_OFFSET = { 47, 60 };
 }
