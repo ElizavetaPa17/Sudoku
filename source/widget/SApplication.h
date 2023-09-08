@@ -6,6 +6,7 @@
 
 #include "../resources/InitExitManager.h"
 #include "../handle_elements/STimer.h"
+#include "../handle_elements/SMusicPlayer.h"
 #include "../renderer/STexture.h"
 #include "../renderer/SFont.h"
 #include "SChooseLevelDialog.h"
@@ -45,6 +46,8 @@ private:
     STexture      background_;
     SGameEnvironment game_environment_;
     SChooseLevelDialog choose_level_dialog_;
+
+    SMusicPlayer music_;
 
     bool displ_choose_dialog_ = false;
 };
