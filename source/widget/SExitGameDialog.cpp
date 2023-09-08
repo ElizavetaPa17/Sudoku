@@ -17,14 +17,17 @@ void SExitGameDialog::sendParentEvent() {
 void SExitGameDialog::setUp(SWidget *parent, SDL_Renderer *renderer) {
     parent_ = parent;
 
+    SChunkPlayer chunk_player;
+    chunk_player.loadFromFile(SConstants::chunk_path);
+
     background_texture_.loadFromFile(renderer, "picture/quit_game_dialog.png");
 
     STexture buffer_texture;
     buffer_texture.loadFromFile(renderer, "picture/agree_quit_button.png");
-    agree_button_.setUp(this, buffer_texture);
+    agree_button_.setUp(this, buffer_texture, chunk_player);
 
     buffer_texture.loadFromFile(renderer, "picture/disagree_quit_button.png");
-    disagree_button_.setUp(this, buffer_texture);
+    disagree_button_.setUp(this, buffer_texture, chunk_player);
 
     setPosition({ 0, 0 });
 }

@@ -19,17 +19,20 @@ void SChooseLevelDialog::sendParentEvent() {
 void SChooseLevelDialog::setUp(SWidget* parent, SDL_Renderer* renderer) {
     parent_ = parent;
 
+    SChunkPlayer chunk_player;
+    chunk_player.loadFromFile(SConstants::chunk_path);
+
     background_texture_.loadFromFile(renderer, "picture/choose_level_dialog.png");
 
     STexture button_texture;
     button_texture.loadFromFile(renderer, "picture/easy_level_button.png");
-    easy_level_button_.setUp(this, button_texture);
+    easy_level_button_.setUp(this, button_texture, chunk_player);
 
     button_texture.loadFromFile(renderer, "picture/medium_level_button.png");
-    medium_level_button_.setUp(this, button_texture);
+    medium_level_button_.setUp(this, button_texture, chunk_player);
 
     button_texture.loadFromFile(renderer, "picture/hard_level_button.png");
-    hard_level_button_.setUp(this, button_texture);
+    hard_level_button_.setUp(this, button_texture, chunk_player);
 
     setPosition({ 0, 0 });
 }

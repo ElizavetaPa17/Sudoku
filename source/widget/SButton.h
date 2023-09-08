@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "../renderer/STexture.h"
+#include "../handle_elements/SChunkPlayer.h"
 #include "SWidget.h"
 
 class SButton : public SWidget {
@@ -13,7 +14,9 @@ public:
     void sendParentEvent() override;
 
     // must be set up before using
-    virtual void setUp(SWidget* parent, const STexture& background_texture);
+    virtual void setUp(SWidget* parent, 
+                       const STexture& background_texture, 
+                       const SChunkPlayer& chunk_player);
     virtual void handleEvents(SDL_Event& event);
     virtual void render(SDL_Renderer* renderer);
 
@@ -22,4 +25,5 @@ public:
     virtual void setPosition(SDL_Point position);
 protected:
     STexture _background_texture;
+    SChunkPlayer chunk_player_;
 };

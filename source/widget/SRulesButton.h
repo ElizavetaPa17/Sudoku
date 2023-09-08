@@ -4,14 +4,14 @@
 
 #include "SButton.h"
 #include "SWidget.h"
-
 #include "../resources/constants.h"
 
 class SRulesButton : public SButton {
 public:
     SRulesButton() = default;
 
-    void setUp(SWidget* parent, const STexture& background_texture, const STexture& rules_hint_texture);
+    void setUp(SWidget* parent, const STexture& background_texture, const STexture& rules_hint_texture, 
+                                const SChunkPlayer& chunk_player);
     void handleEvents(SDL_Event& event) override;
     void render(SDL_Renderer* renderer) override;
 

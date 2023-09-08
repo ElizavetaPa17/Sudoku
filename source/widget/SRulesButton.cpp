@@ -3,9 +3,10 @@
 
 void SRulesButton::setUp(SWidget *parent, 
                          const STexture &background_texture, 
-                         const STexture &rules_hint_texture)
+                         const STexture &rules_hint_texture,
+                         const SChunkPlayer& chunk_player)
 {
-    SButton::setUp(parent, background_texture);
+    SButton::setUp(parent, background_texture, chunk_player);
 
     _rules_hint_texture = rules_hint_texture;
 }

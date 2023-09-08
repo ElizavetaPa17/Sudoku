@@ -9,7 +9,7 @@ bool SMusicPlayer::loadFromFile(const std::string& path) {
         music_.reset(temp, Deleter());
     }
 
-    return temp; /*== nullptr*/
+    return temp; // != nullptr
 }
 
 void SMusicPlayer::play() const {

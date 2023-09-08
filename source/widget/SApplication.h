@@ -47,7 +47,7 @@ private:
     SGameEnvironment game_environment_;
     SChooseLevelDialog choose_level_dialog_;
 
-    SMusicPlayer music_;
+    SMusicPlayer music_player_;
 
     bool displ_choose_dialog_ = false;
 };

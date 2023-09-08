@@ -5,6 +5,7 @@
 
 #include "../resources/constants.h"
 #include "../handle_elements/SBoard.h"
+#include "../handle_elements/SChunkPlayer.h"
 #include "../renderer/STexture.h"
 #include "SScoreLabel.h"
 #include "STimerLabel.h"

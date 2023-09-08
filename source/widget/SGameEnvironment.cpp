@@ -29,6 +29,8 @@ void SGameEnvironment::sendParentEvent() {
 
 void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
     parent_ = parent;
+    SChunkPlayer chunk_player;
+    chunk_player.loadFromFile(SConstants::chunk_path);
 
     STexture buffer_texture;
     buffer_texture.loadFromFile(renderer, "picture/board.png");
@@ -48,26 +50,26 @@ void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
     timer_label_.setPosition({ 460, 100 });
 
     buffer_texture.loadFromFile(renderer, "picture/voice_control_button.png");
-    voice_button_.setUp(this, buffer_texture);
+    voice_button_.setUp(this, buffer_texture, chunk_player);
     voice_button_.setPosition({ 460, 230 });
 
     STexture hint_texture;
     hint_texture.loadFromFile(renderer, "picture/rules_hint_menu.png");
     buffer_texture.loadFromFile(renderer, "picture/show_rules_button.png");
 
-    rules_button_.setUp(this, buffer_texture, hint_texture);
+    rules_button_.setUp(this, buffer_texture, hint_texture, chunk_player);
     rules_button_.setPosition({ 525, 230 });
 
     buffer_texture.loadFromFile(renderer, "picture/show_hint_button.png");
-    closed_hint_button_.setUp(this, buffer_texture);
+    closed_hint_button_.setUp(this, buffer_texture, chunk_player);
     closed_hint_button_.setPosition({ 589, 230 });
 
     buffer_texture.loadFromFile(renderer, "picture/hide_hint_button.png");
-    opened_hint_button_.setUp(this, buffer_texture);
+    opened_hint_button_.setUp(this, buffer_texture, chunk_player);
     opened_hint_button_.setPosition({ 589, 230 });
 
     buffer_texture.loadFromFile(renderer, "picture/quit_game_button.png");
-    quit_game_button_.setUp(this, buffer_texture);
+    quit_game_button_.setUp(this, buffer_texture, chunk_player);
     quit_game_button_.setPosition({ 653, 230 });
 }
 

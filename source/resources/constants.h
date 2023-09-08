@@ -33,4 +33,5 @@ namespace SConstants {
     };
    
     constexpr SDL_Point RULES_HINT_OFFSET = { 47, 60 };
+    const std::string chunk_path = "audio/click_button_sound.wav";
 }

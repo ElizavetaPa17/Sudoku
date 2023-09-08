@@ -46,6 +46,10 @@ bool SApplication::init() {
             return false;
         }
         
+        if (!music_player_.loadFromFile("audio/sudoku_music.wav")) {
+            std::cerr << "Music can't be loaded!\n";
+        }
+
         background_.loadFromFile(renderer_, "picture/background.png");
 
         choose_level_dialog_.setUp(this, renderer_);
@@ -53,16 +57,13 @@ bool SApplication::init() {
     
 
         game_environment_.setUp(this, renderer_);
-        if (!music_.loadFromFile("audio/sudoku_music.wav")) {
-            std::cerr << "Music can't be load!\n";
-        }
 
         return true;
     }
 }
 
 void SApplication::run() {
-    music_.play();
+    music_player_.play();
     do {
         if (runChooseLevelDialog()) {
             displ_choose_dialog_ = false;
@@ -132,7 +133,7 @@ void SApplication::runGame() {
 void SApplication::quit() {
     SDL_DestroyRenderer(renderer_);
     SDL_DestroyWindow(window_);
-    music_.stop();
+    music_player_.stop();
 
     InitExitManager::exit();
 }
