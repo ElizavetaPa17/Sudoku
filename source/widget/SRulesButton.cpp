@@ -11,6 +11,10 @@ void SRulesButton::setUp(SWidget *parent,
     _rules_hint_texture = rules_hint_texture;
 }
 
+void SRulesButton::openRulePage() {
+    system("nohup xdg-open \"https://sudoku.com/ru/pravila-sudoku/\"");
+}
+
 void SRulesButton::handleEvents(SDL_Event &event) {
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -24,8 +28,9 @@ void SRulesButton::handleEvents(SDL_Event &event) {
         _render_hint_menu = false;
         return;
     } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        system("nohup xdg-open \"https://sudoku.com/ru/pravila-sudoku/\"");
+        chunk_player_.play();
         sendParentEvent();
+        openRulePage();
     } else {
         _render_hint_menu = true;
     }

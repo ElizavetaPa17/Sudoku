@@ -20,6 +20,8 @@ public:
 private:
     using SButton::setUp; // hide base class method
 
+    void openRulePage();
+
     STexture _rules_hint_texture;
 
     bool _render_hint_menu = false;
