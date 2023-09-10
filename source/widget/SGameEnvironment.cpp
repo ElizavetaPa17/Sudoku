@@ -33,8 +33,9 @@ void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
     chunk_player.loadFromFile(SConstants::chunk_path);
 
     STexture buffer_texture;
+    STexture additional_texture;
+    
     buffer_texture.loadFromFile(renderer, "picture/board.png");
-
     board_.setTexture(buffer_texture);
     board_.setPosition({ 35, 35 });
 
@@ -49,15 +50,21 @@ void SGameEnvironment::setUp(SWidget* parent, SDL_Renderer* renderer) {
     timer_label_.setUp(renderer, buffer_texture);
     timer_label_.setPosition({ 460, 100 });
 
+    SMusicPlayer music_player;
+    if (!music_player.loadFromFile("audio/sudoku_music.wav")) {
+        std::cerr << "Unable to load main music.\n";
+    }
+
+
     buffer_texture.loadFromFile(renderer, "picture/voice_control_button.png");
-    voice_button_.setUp(this, buffer_texture, chunk_player);
+    additional_texture.loadFromFile(renderer, "picture/stop_music.png");
+    voice_button_.setUp(this, buffer_texture, additional_texture, chunk_player, music_player);
     voice_button_.setPosition({ 460, 230 });
 
-    STexture hint_texture;
-    hint_texture.loadFromFile(renderer, "picture/rules_hint_menu.png");
+    additional_texture.loadFromFile(renderer, "picture/rules_hint_menu.png");
     buffer_texture.loadFromFile(renderer, "picture/show_rules_button.png");
 
-    rules_button_.setUp(this, buffer_texture, hint_texture, chunk_player);
+    rules_button_.setUp(this, buffer_texture, additional_texture, chunk_player);
     rules_button_.setPosition({ 525, 230 });
 
     buffer_texture.loadFromFile(renderer, "picture/show_hint_button.png");

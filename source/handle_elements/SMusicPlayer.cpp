@@ -27,3 +27,8 @@ void SMusicPlayer::pause() const {
 void SMusicPlayer::unpause() const {
     Mix_ResumeMusic();
 }
+
+// Check the current music stream status
+bool SMusicPlayer::isPlaying() {
+    return Mix_PlayingMusic();
+}

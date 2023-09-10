@@ -14,6 +14,7 @@
 #include "SWidget.h"
 #include "SButton.h"
 #include "SRulesButton.h"
+#include "SVoiceButton.h"
 
 class SGameEnvironment : public SWidget {
 public:
@@ -45,7 +46,7 @@ private:
    STimerLabel timer_label_;
    SGameLevelLabel game_level_label_;
 
-   SButton voice_button_;
+   SVoiceButton voice_button_;
    SRulesButton rules_button_;
    SButton opened_hint_button_;
    SButton closed_hint_button_;
