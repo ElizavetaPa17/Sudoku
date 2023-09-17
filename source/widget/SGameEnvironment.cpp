@@ -126,7 +126,7 @@ void SGameEnvironment::reset() {
     timer_label_.startTimer();
 
     is_opened_hint_ = displ_exit_dialog_ = false;
-    board_.reset();
+    board_.generateNewBoard();
 }
 
 int SGameEnvironment::getPastTicks() {

@@ -2,15 +2,17 @@
 
 #include <SDL2/SDL.h>
 #include <utility>
+#include <vector>
 
 #include "SLittleCell.h"
+#include "SBoardGenerator.h"
 #include "../resources/constants.h"
 
 class SBoard final {
 public:
     // don't declare copy and move constructor and assignment (they're deleted implicitly)
     // get the renderer because is responsible for setting background
-    SBoard() = default;
+    SBoard();
     ~SBoard() = default;
 
     void handleEvents(SDL_Event& event);
@@ -21,6 +23,7 @@ public:
     // if there isn't any collision return pair(-1, -1)
     void checkCells();
     void reset();
+    void generateNewBoard();
 
     void setPosition(SDL_Point point);
     SDL_Point getPosition() { return cell_background_.getPosition(); }
@@ -28,7 +31,7 @@ public:
 private:
     bool checkRectCells(int row_offset, int col_offset) const;
 
-    SLittleCell cells_[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN];
+    std::vector<std::vector<SLittleCell>> cells_;
     STexture cell_background_;    
 
     int cell_width_  = 0;

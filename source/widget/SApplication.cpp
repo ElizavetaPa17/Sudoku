@@ -29,7 +29,6 @@ void SApplication::sendParentEvent() {
 
 bool SApplication::init() {
     if (!InitExitManager::init(SDL_INIT_VIDEO | SDL_INIT_AUDIO, IMG_INIT_JPG | IMG_INIT_PNG)) {
-        std::cerr << "Application error.\n";
         InitExitManager::exit();
         
         return false;
@@ -63,8 +62,9 @@ void SApplication::run() {
         if (runChooseLevelDialog()) {
             displ_choose_dialog_ = false;
             runGame();
+        } else {
+            break;
         }
-
     } while (displ_choose_dialog_);
 
     quit();
@@ -78,6 +78,7 @@ bool SApplication::runChooseLevelDialog() {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;
+                break;
             }
 
             choose_level_dialog_.handleEvents(event);

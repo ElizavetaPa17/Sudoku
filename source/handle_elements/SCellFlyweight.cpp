@@ -23,6 +23,11 @@ STexture* SCellFlyweight::getFlyweightValue(char value) {
     if (value == ' ' ) {
         return &shared_cells_[SConstants::SHARED_CELL_VALUE_COUNT - 1];
     } else {
+        if (value < 49 || value > 57) {
+            std::cerr << "SCellFlyweight undefined value: " << value << '\n';
+            return nullptr;
+        }
+
         return &shared_cells_[value - 48];
     }
 }

@@ -1,5 +1,12 @@
 #include "SBoard.h"
 
+SBoard::SBoard() { 
+    cells_.resize(SConstants::CELL_DIMEN);
+    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
+        cells_[i].resize(9);
+    }
+}
+
 void SBoard::handleEvents(SDL_Event &event) {
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -13,13 +20,14 @@ void SBoard::handleEvents(SDL_Event &event) {
       int current_cell_row  = (y - getPosition().y) / cell_height_;
       int current_cell_col  = (x - getPosition().x) / cell_width_;
 
+
       // if there any collision and user isn't fixing it we ignore any other input
       if (is_collision_ && 
          (active_cell_.first != current_cell_row || active_cell_.second != current_cell_col)) {
           return;
       } else {
           active_cell_ = { current_cell_row, current_cell_col };
-          cells_[current_cell_row][current_cell_col].handleEvents(event); 
+          cells_[current_cell_row][current_cell_col].handleEvents(event);
           checkCells();
       }
     }
@@ -126,6 +134,10 @@ void SBoard::reset() {
 
     active_cell_ = { -1, -1 };
     is_collision_ = false;
+}
+
+void SBoard::generateNewBoard() {
+    SBoardGenerator::getInstance()->generateNewBoard(cells_);
 }
 
 void SBoard::setPosition(SDL_Point point) {

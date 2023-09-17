@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <string>
 
 namespace SConstants {
     constexpr int SCREEN_WIDTH  = 736;
