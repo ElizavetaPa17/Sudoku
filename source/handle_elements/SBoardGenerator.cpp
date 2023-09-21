@@ -15,48 +15,37 @@ SBoardGenerator* SBoardGenerator::getInstance() {
 }
 
 // Base Sudoku Generator
-void SBoardGenerator::generateNewBoard(std::vector<std::vector<SLittleCell>>& board) {
+void SBoardGenerator::generateNewBoard(InnerBoard& inner_board) {
     int loop_count = count_distrib_(generator_);
 
-    int new_board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN];
     for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
         for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
-            new_board[i][j] = base_board[i][j];
+            inner_board.board[i][j] = base_board_[i][j];
         }
     }
 
     for (int i = 0; i < loop_count; ++i) {
         if (count_distrib_(generator_) % 2) { 
-            transpose(new_board);
+            transpose(inner_board);
         }
         
-        swapSmallRows(new_board);
-        swapSmallColumns(new_board);
-        swapRowsArea(new_board);
-        swapColumnsArea(new_board);
-    }
-
-    // generate the first 3 rows
-    for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
-        for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
-            // ASCII correction
-            board[i][j].setValue(new_board[i][j] + 48);
-        }
+        swapSmallRows(inner_board);
+        swapSmallColumns(inner_board);
+        swapRowsArea(inner_board);
+        swapColumnsArea(inner_board);
     }
 }
 
-void SBoardGenerator::transpose(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]) {
+void SBoardGenerator::transpose(InnerBoard& inner_board) {
     int temp = 0;
     for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
         for (int j = i; j < SConstants::CELL_DIMEN; ++j) {
-            temp = board[i][j];
-            board[i][j] = board[j][i];
-            board[j][i] = temp;
+            std::swap(inner_board.board[i][j], inner_board.board[j][i]);
         }
     }
 }
 
-void SBoardGenerator::swapSmallRows(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]) {
+void SBoardGenerator::swapSmallRows(InnerBoard& inner_board) {
     int swap_count = count_distrib_(generator_);
     int area = 0, first_line = 0, second_line = 0;
     int temp = 0;
@@ -66,11 +55,11 @@ void SBoardGenerator::swapSmallRows(int board[SConstants::CELL_DIMEN][SConstants
         first_line = dimen_distrib_(generator_) % 3;
         second_line = dimen_distrib_(generator_) % 3;
 
-        swapRows(board, area * 3 + first_line, area * 3 + second_line);
+        swapRows(inner_board, area * 3 + first_line, area * 3 + second_line);
     }
 }
 
-void SBoardGenerator::swapSmallColumns(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]) {
+void SBoardGenerator::swapSmallColumns(InnerBoard& inner_board) {
     int swap_count = count_distrib_(generator_);
     int area = 0, first_line = 0, second_line = 0;
     int temp = 0;
@@ -80,11 +69,11 @@ void SBoardGenerator::swapSmallColumns(int board[SConstants::CELL_DIMEN][SConsta
         first_line = dimen_distrib_(generator_) % 3;
         second_line = dimen_distrib_(generator_) % 3;
 
-        swapColumns(board, area * 3 + first_line, area * 3 + second_line);
+        swapColumns(inner_board, area * 3 + first_line, area * 3 + second_line);
     }
 }
 
-void SBoardGenerator::swapRowsArea(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]) {
+void SBoardGenerator::swapRowsArea(InnerBoard& inner_board) {
     int swap_count = count_distrib_(generator_);
     int first_row_area = 0, second_row_area = 0;
     int temp = 0;
@@ -94,12 +83,12 @@ void SBoardGenerator::swapRowsArea(int board[SConstants::CELL_DIMEN][SConstants:
         second_row_area = dimen_distrib_(generator_) % 3;
         
         for (int j = 0; j < 3; ++j) {
-            swapRows(board, first_row_area * 3 + j, second_row_area * 3 + j);
+            swapRows(inner_board, first_row_area * 3 + j, second_row_area * 3 + j);
         }
     }
 }
 
-void SBoardGenerator::swapColumnsArea(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]) {
+void SBoardGenerator::swapColumnsArea(InnerBoard& inner_board) {
     int swap_count = count_distrib_(generator_);
     int first_column_area = 0, second_column_area = 0;
     int temp = 0;
@@ -109,28 +98,25 @@ void SBoardGenerator::swapColumnsArea(int board[SConstants::CELL_DIMEN][SConstan
         second_column_area = dimen_distrib_(generator_) % 3;
         
         for (int j = 0; j < 3; ++j) {
-            swapColumns(board, first_column_area * 3 + j, second_column_area * 3 + j);
+            swapColumns(inner_board, first_column_area * 3 + j, second_column_area * 3 + j);
         }
     }
 }
 
-void SBoardGenerator::swapRows(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN],
-                               int first_row, int second_row) {
+void SBoardGenerator::swapRows(InnerBoard& inner_board, int first_row, int second_row) {
     int temp = 0;
     for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
-        std::swap(board[first_row][j], board[second_row][j]);
+        std::swap(inner_board.board[first_row][j], inner_board.board[second_row][j]);
     }    
 }
 
-void SBoardGenerator::swapColumns(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN], 
-                                  int first_column, 
-                                  int second_column)
+void SBoardGenerator::swapColumns(InnerBoard& inner_board, int first_column, int second_column)
 {
     int temp = 0;
     for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
-        temp = board[j][first_column];
-        board[j][first_column] = board[j][second_column];
-        board[j][second_column] = temp;
+        std::swap(inner_board.board[j][first_column], inner_board.board[j][second_column]);
     }
     
 }
+
+

@@ -32,6 +32,12 @@ namespace SConstants {
         RULES_CHECKING,
         QUIT,
     };
+
+    enum class ScoreStatus {
+        ADD,
+        SUB,
+        NO_CHANGES,
+    };
    
     constexpr SDL_Point RULES_HINT_OFFSET = { 47, 60 };
     const std::string chunk_path = "audio/click_button_sound.wav";

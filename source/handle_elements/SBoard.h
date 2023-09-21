@@ -8,6 +8,10 @@
 #include "SBoardGenerator.h"
 #include "../resources/constants.h"
 
+struct InnerBoard final {
+    int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]{};
+};
+
 class SBoard final {
 public:
     // don't declare copy and move constructor and assignment (they're deleted implicitly)
@@ -25,14 +29,24 @@ public:
     void reset();
     void generateNewBoard();
 
+    void setRenderInnerBoard(bool flag);
+
     void setPosition(SDL_Point point);
-    SDL_Point getPosition() { return cell_background_.getPosition(); }
+    SDL_Point getPosition();
+    
+    SConstants::ScoreStatus getScoreStatus();
+    void setScoreStatus(SConstants::ScoreStatus status) { score_status_ = status; }
 
 private:
     bool checkRectCells(int row_offset, int col_offset) const;
+    void copyInnerBoard();
 
-    std::vector<std::vector<SLittleCell>> cells_;
+    std::vector<std::vector<SLittleCell>> user_cells_;
     STexture cell_background_;    
+
+    InnerBoard inner_board;
+    std::vector<std::vector<SLittleCell>> inner_cells_;
+    bool is_render_inner_ = false;
 
     int cell_width_  = 0;
     int cell_height_ = 0; 
@@ -41,4 +55,6 @@ private:
     // comprises  row and collumn
     std::pair<int, int> active_cell_ = { -1, -1 };
     bool is_collision_ = false;
+
+    SConstants::ScoreStatus score_status_ = SConstants::ScoreStatus::NO_CHANGES;
 };

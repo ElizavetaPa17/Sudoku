@@ -4,32 +4,32 @@
 #include <random>
 
 #include "../resources/constants.h"
-#include "../handle_elements/SLittleCell.h"
+#include "SBoard.h"
+
+struct InnerBoard;
 
 class SBoardGenerator final {
 public:
     static SBoardGenerator* getInstance();
 
-    void generateNewBoard(std::vector<std::vector<SLittleCell>>& board);
+    void generateNewBoard(InnerBoard& inner_board);
 private:
     SBoardGenerator();
     
-    void transpose(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]);
+    void transpose(InnerBoard& inner_board);
 
     // swap two rows or colums within one horizontal or vertical area
-    void swapSmallRows(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]);
-    void swapSmallColumns(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]);
+    void swapSmallRows(InnerBoard& inner_board);
+    void swapSmallColumns(InnerBoard& inner_board);
 
     // swap 3*9 horizontal or 9*3 vertical areas
-    void swapRowsArea(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]);
-    void swapColumnsArea(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]);
+    void swapRowsArea(InnerBoard& inner_board);
+    void swapColumnsArea(InnerBoard& inner_board);
 
-    void swapRows(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN],
-                  int first_row, int second_row);
-    void swapColumns(int board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN],
-                     int first_column, int second_column);
+    void swapRows(InnerBoard& inner_board, int first_row, int second_row);
+    void swapColumns(InnerBoard& inner_board, int first_column, int second_column);
     
-    constexpr static int base_board[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN] = {
+    constexpr static int base_board_[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN] = {
         1, 2, 3, 4, 5, 6, 7, 8, 9,
         4, 5, 6, 7, 8, 9, 1, 2, 3,
         7, 8, 9, 1, 2, 3, 4, 5, 6,

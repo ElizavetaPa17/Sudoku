@@ -35,6 +35,7 @@ public:
     
     SConstants::GameState getGameState();
 
+    void setScoreBlocking(bool flag);
     void setScore(SDL_Renderer* renderer, int value);
     int  getScore();
 
@@ -53,6 +54,7 @@ private:
    SButton quit_game_button_;
 
    bool is_opened_hint_ = false;
+   bool is_blocked_score_changing_ = false;
    bool displ_exit_dialog_ = false;
 
    SConstants::GameState game_state_ = SConstants::GameState::PLAY;

@@ -80,7 +80,7 @@ bool SApplication::runChooseLevelDialog() {
                 quit = true;
                 break;
             }
-
+            
             choose_level_dialog_.handleEvents(event);
         }
 
@@ -114,8 +114,10 @@ void SApplication::runGame() {
             }
 
             game_environment_.handleEvents(event);
+            // we block score changing so that user can't stuck the button
+            game_environment_.setScoreBlocking(true);
         }
-
+       
         SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer_);
 
@@ -123,6 +125,8 @@ void SApplication::runGame() {
         game_environment_.render(renderer_);
 
         SDL_RenderPresent(renderer_);
+        
+        game_environment_.setScoreBlocking(false);
     }
 }
 

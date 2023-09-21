@@ -1,13 +1,16 @@
 #include "SGameEnvironment.h"
 
 void SGameEnvironment::handleChildEvent(SWidget *child) {
-    if (&voice_button_ == child) {
-        /* TODO */
-    } else if (&rules_button_ == child) {
-        /* TODO */
-    } else if (&closed_hint_button_ == child) {
-        is_opened_hint_ = !is_opened_hint_; // closed_hint_button and closed_hint_button_ have the same 
-                                          // position. So just switch the boolean and rendering button
+    if (&closed_hint_button_ == child) {
+        // closed_hint_button and closed_hint_button_ have the same 
+        // position. So just switch the boolean and rendering button
+        if (is_opened_hint_) {
+            is_opened_hint_ = false;
+            board_.setRenderInnerBoard(false);
+        } else {
+            is_opened_hint_ = true;
+            board_.setRenderInnerBoard(true);
+        }
     } else if (&quit_game_button_ == child) {
         timer_label_.pauseTimer();
         displ_exit_dialog_ = true;
@@ -87,6 +90,13 @@ void SGameEnvironment::setGameLevel(SDL_Renderer* renderer, SConstants::GameLeve
 
 void SGameEnvironment::render(SDL_Renderer *renderer) {
     board_.render(renderer);
+
+    if (board_.getScoreStatus() == SConstants::ScoreStatus::ADD) {
+        score_label_.addScore(renderer, 10);
+    } else if (board_.getScoreStatus() ==  SConstants::ScoreStatus::SUB) {
+        score_label_.subScore(renderer, 10);
+    }
+    
     score_label_.render(renderer);
     timer_label_.render(renderer);
     game_level_label_.render(renderer);
@@ -111,7 +121,11 @@ void SGameEnvironment::handleEvents(SDL_Event &event) {
     if (displ_exit_dialog_) {
         exit_game_dialog_.handleEvents(event);
     } else {
-        board_.handleEvents(event);
+
+        if (!is_blocked_score_changing_) {
+            board_.handleEvents(event);
+        }
+
         voice_button_.handleEvents(event);
         rules_button_.handleEvents(event);
         closed_hint_button_.handleEvents(event);
@@ -137,8 +151,17 @@ SConstants::GameState SGameEnvironment::getGameState() {
     return game_state_;
 }
 
+void SGameEnvironment::setScoreBlocking(bool flag) {
+    is_blocked_score_changing_ = flag;
+
+    if (is_blocked_score_changing_ == false) {
+        board_.setScoreStatus(SConstants::ScoreStatus::NO_CHANGES);
+    }
+}
+
 void SGameEnvironment::setScore(SDL_Renderer* renderer, int value) {
    score_label_.setScore(renderer, value); 
+   score_label_.render(renderer);
 }
 
 int SGameEnvironment::getScore() {
