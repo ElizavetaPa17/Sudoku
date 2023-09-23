@@ -1,4 +1,5 @@
 #include "SBoard.h"
+#include "SBoardGenerator.h"
 
 // create cells 9*9 dimension
 SBoard::SBoard() { 
@@ -31,7 +32,8 @@ void SBoard::handleEvents(SDL_Event &event) {
 
       // if there any collision and user isn't fixing it we ignore any other input
       if (is_collision_ && 
-         (active_cell_.first != current_row || active_cell_.second != current_col)) {
+         (active_cell_.first != current_row || active_cell_.second != current_col) || 
+         render_cells_[current_row][current_col] == true) {
           return;
       } else {
           active_cell_ = { current_row, current_col };
@@ -67,6 +69,10 @@ void SBoard::render(SDL_Renderer *renderer) {
     } else {
         for (int i = 0; i < SConstants::CELL_DIMEN; ++i) {
             for (int j = 0; j < SConstants::CELL_DIMEN; ++j) {
+                if (render_cells_[i][j]) {
+                    inner_cells_[i][j].render(renderer);
+                }
+
                 user_cells_[i][j].render(renderer);
             }
         }
@@ -170,8 +176,41 @@ void SBoard::reset() {
     is_collision_ = false;
 }
 
-void SBoard::generateNewBoard() {
+void SBoard::generateNewBoard(SConstants::GameLevel level) {
     SBoardGenerator::getInstance()->generateNewBoard(inner_board);
+        
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            render_cells_[i][j] = true;
+        }
+    }
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution distrib(0, 8);
+    
+    SSudokuSolver solver;
+    int old_value = 0, i = 0, border = 0; 
+    int row = 0, col = 0;
+
+    if (level == SConstants::GameLevel::EASY_LEVEL) {
+        border = 45;
+    } else if (level == SConstants::GameLevel::MIDDLE_LEVEL) {
+        border = 51;
+    } else {
+        border = 56;
+    }
+    
+    // border is a number of deleted cells
+    while (i < border) {
+        row = distrib(gen);
+        col = distrib(gen);
+        old_value = inner_board.board[row][col];
+        if (solver.SolveSudoku(inner_board.board)) {
+            render_cells_[row][col] = false;
+            ++i;
+        } 
+    }
    
     copyInnerBoard();
 }

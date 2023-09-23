@@ -5,6 +5,8 @@ void SGameLevelLabel::render(SDL_Renderer *renderer) {
 }
 
 void SGameLevelLabel::setUp(SDL_Renderer* renderer, SConstants::GameLevel game_level) {
+    game_level_ = game_level;
+
     switch (game_level) {
         case SConstants::GameLevel::EASY_LEVEL: {
             background_.loadFromFile(renderer, "picture/easy_level_label.png");
@@ -27,4 +29,8 @@ void SGameLevelLabel::setUp(SDL_Renderer* renderer, SConstants::GameLevel game_l
 
 void SGameLevelLabel::setPosition(SDL_Point position) {
     background_.setPosition(position);
+}
+
+SConstants::GameLevel SGameLevelLabel::getGameLevel() {
+    return game_level_;
 }

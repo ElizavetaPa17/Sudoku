@@ -2,10 +2,12 @@
 
 #include <SDL2/SDL.h>
 #include <utility>
+#include <random>
 #include <vector>
 
 #include "SLittleCell.h"
 #include "SBoardGenerator.h"
+#include "SSudokuSolver.h"
 #include "../resources/constants.h"
 
 struct InnerBoard final {
@@ -27,7 +29,7 @@ public:
     // if there isn't any collision return pair(-1, -1)
     void checkCells();
     void reset();
-    void generateNewBoard();
+    void generateNewBoard(SConstants::GameLevel level);
 
     void setRenderInnerBoard(bool flag);
 
@@ -46,6 +48,7 @@ private:
 
     InnerBoard inner_board;
     std::vector<std::vector<SLittleCell>> inner_cells_;
+    bool render_cells_[SConstants::CELL_DIMEN][SConstants::CELL_DIMEN]{};
     bool is_render_inner_ = false;
 
     int cell_width_  = 0;
